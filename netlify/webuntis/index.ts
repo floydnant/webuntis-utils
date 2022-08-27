@@ -1,7 +1,7 @@
-import { writeFile, readFile } from "fs/promises";
-import { join } from "path";
-import WebUntisType, { Lesson, ShortData } from "webuntis";
-const WebUntis = require("webuntis");
+// import { writeFile, readFile } from "fs/promises";
+// import { join } from "path";
+import WebUntisType, { Lesson, ShortData } from 'webuntis';
+const WebUntis = require('webuntis');
 
 export interface UntisCredentials {
     school: string;
@@ -15,7 +15,7 @@ interface SchoolYear {
 }
 
 export const getSubjectId = (subjects: ShortData[]) => {
-    return subjects.map((su) => `${su.longname} (${su.name})`).join(", ");
+    return subjects.map((su) => `${su.longname} (${su.name})`).join(', ');
 };
 
 export const getCurrentSchoolYear = (untis: WebUntisType) => {
@@ -47,10 +47,10 @@ export const getLessonsForSchoolYear = async (
 };
 
 export const reduceSubjects = (lessons: Lesson[]) => {
-    const subjects = new Map<string, Omit<SubjectData, "presence">>();
+    const subjects = new Map<string, Omit<SubjectData, 'presence'>>();
 
     lessons.forEach((lesson) => {
-        if (lesson.code == "irregular") return;
+        if (lesson.code == 'irregular') return;
         const subjectId = getSubjectId(lesson.su);
 
         const subjectFromMap = subjects.get(subjectId);
@@ -58,7 +58,7 @@ export const reduceSubjects = (lessons: Lesson[]) => {
             lessonsTotal: (subjectFromMap?.lessonsTotal || 0) + 1,
             lessonsCancelled:
                 (subjectFromMap?.lessonsCancelled || 0) +
-                (lesson.code == "cancelled" ? 1 : 0),
+                (lesson.code == 'cancelled' ? 1 : 0),
             lessonsMissed: null,
         });
     });
@@ -84,7 +84,7 @@ export const getAbsences = async (
         schoolYear.endDate as any
     );
     const lessonsTakenPlace = allYearsLessons.filter(
-        (l) => l.code != "cancelled" && l.code != "irregular"
+        (l) => l.code != 'cancelled' && l.code != 'irregular'
     );
 
     const subjectLessonsMap = reduceSubjects(allYearsLessons);

@@ -6,7 +6,7 @@ import {
     getLessonsForSchoolYear,
     SubjectData,
     UntisCredentials,
-} from "../../src";
+} from "../webuntis";
 
 export const handler: Handler = async (event, context) => {
     const credentials: UntisCredentials = JSON.parse(event.body || "{}");
