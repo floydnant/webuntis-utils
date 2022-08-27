@@ -29,11 +29,11 @@ input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="url"] {
-    @apply rounded-lg py-2 px-3 bg-gray-100 text-gray-800;
+    @apply rounded-lg py-2 px-3 bg-gray-100 text-gray-800 outline-none focus:ring-1 ring-untis;
 }
 
 @layer components {
     .button {
-        @apply font-semibold rounded-full py-2 px-4;
+        @apply font-semibold rounded-full py-2 px-4 hover:opacity-80 transition-opacity;
     }
 }

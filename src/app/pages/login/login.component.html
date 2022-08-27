@@ -1,13 +1,37 @@
 <main class="h-screen w-screen flex flex-col justify-center items-center">
     <div>
         <h1>Login</h1>
-        <form (submit)="$event.preventDefault()" class="w-72 flex flex-col gap-2">
-            <input type="text" placeholder="School">
-            <input type="text" placeholder="Username">
-            <input type="password" placeholder="Password">
-            <input type="url" placeholder="Server URL">
-            
+        <form
+            *ngIf="userData; else fullLoginForm"
+            (submit)="$event.preventDefault(); onSubmit(passwordInput.value)"
+            class="w-72 flex flex-col gap-2"
+        >
+            <p>
+                with <span class="text-untis">{{ userData.username }}</span>
+            </p>
+            <input #passwordInput type="password" placeholder="Password" />
             <button class="button mt-2 w-full bg-untis">Login</button>
         </form>
+        <ng-template #fullLoginForm>
+            <form
+                (submit)="
+                    $event.preventDefault();
+                    onSubmit({
+                        username: usernameInput.value,
+                        password: passwordInput.value,
+                        school: schoolInput.value,
+                        serverUrl: serverUrlInput.value
+                    })
+                "
+                class="w-72 flex flex-col gap-2"
+            >
+                <input #usernameInput type="text" placeholder="Username" />
+                <input #passwordInput type="password" placeholder="Password" />
+                <input #schoolInput type="text" placeholder="School" />
+                <input #serverUrlInput type="text" placeholder="Server URL" />
+
+                <button class="button mt-2 w-full bg-untis">Login</button>
+            </form>
+        </ng-template>
     </div>
 </main>
