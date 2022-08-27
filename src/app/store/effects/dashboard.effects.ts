@@ -23,7 +23,7 @@ export class DashboardEffects {
                         dashboardActions.loadSubjectsSuccess({ subjects })
                     );
                 }
-                return this.untis.getSubjects().pipe(
+                return this.untis.getPresences().pipe(
                     map((subjects) => {
                         sessionStorage.setItem(
                             'untis-data-subjects',
