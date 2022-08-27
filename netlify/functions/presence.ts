@@ -19,7 +19,7 @@ export const handler: Handler = async (event, _context) => {
     )
         return {
             statusCode: 400,
-            // @TODO: figure out how to correctly handle errors here
+            // @TODO: #6 figure out how to correctly handle errors here
             errorMessage:
                 'Invalid credentials, please provide school, username, password, and server url.',
         };

@@ -7,7 +7,7 @@ const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'dashboard', component: DashboardComponent },
     { path: '', pathMatch: 'full', redirectTo: 'login' },
-    { path: '**', redirectTo: '' }, // @TODO: add 404 page
+    { path: '**', redirectTo: '' }, // @TODO: #5 add 404 page
 ];
 
 @NgModule({

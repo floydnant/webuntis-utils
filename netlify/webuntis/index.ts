@@ -78,7 +78,7 @@ export const getAbsences = async (
     schoolYear: SchoolYear,
     allYearsLessons: Lesson[]
 ) => {
-    // @TODO: this should only fetch absences of the current Semester
+    // @TODO: #7 this should only fetch absences of the current Semester
     const untisAbsences = await untis.getAbsentLesson(
         schoolYear.startDate as any,
         schoolYear.endDate as any

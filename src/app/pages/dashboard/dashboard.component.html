@@ -1,7 +1,7 @@
 <main class="h-screen w-screen flex flex-col justify-center items-center">
     <h1>Dashboard <span class="text-gray-500">for {{ username$ | async}}</span></h1>
-    <!-- @TODO: add loading state -->
-    <!-- @TODO: add reload button -->
+    <!-- @TODO: #8 add loading state -->
+    <!-- @TODO: #8 add reload button -->
     <div class="subjects | grid grid-cols-2 gap-3 max-w-5xl">
         <div
             *ngFor="let subject of subjects$ | async"
