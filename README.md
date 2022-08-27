@@ -2,9 +2,8 @@
 
 A small website which provides useful webuntis utilities built with angular and netlify.
 
-## TODO
-- [ ] Add eslint
-- [ ] Add 'school start tomorrow' function
+Check out the [latest prod build here](https://webuntis-utils.netlify.app):
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d81e39a5-9758-4e27-9a83-ddbeb6caa22a/deploy-status)](https://app.netlify.com/sites/webuntis-utils/deploys)
 
 
 ## Development server
