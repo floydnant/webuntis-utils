@@ -29,4 +29,8 @@ export class LoginComponent {
             );
         else this.store.dispatch(userDataActions.loginUser({ userData }));
     }
+
+    clearState() {
+        this.store.dispatch(userDataActions.clearState());
+    }
 }

@@ -1,0 +1,23 @@
+<main class="h-screen w-screen flex flex-col justify-center items-center">
+    <h1>Dashboard <span class="text-gray-500">for {{ username$ | async}}</span></h1>
+    <!-- @TODO: add loading state -->
+    <!-- @TODO: add reload button -->
+    <div class="subjects | grid grid-cols-2 gap-3 max-w-5xl">
+        <div
+            *ngFor="let subject of subjects$ | async"
+            class="subject | relative text-gray-900 py-2 px-3 flex flex-col justify-center items-center rounded-xl"
+            style="--width: {{ subject.presence }}%;"
+        >
+            <span class="font-bold">{{ subject.subjectId }}</span>
+            <span>
+                {{ subject.presence }} % Present
+                <span>{{
+                    subject.lessonsMissed
+                        ? "- Missed lessons: " + subject.lessonsMissed
+                        : ""
+                }}</span>
+            </span>
+        </div>
+    </div>
+    <button class="text-gray-400 hover:text-untis hover:underline mt-3 mx-auto" (click)="clearState()">Switch account</button>
+</main>

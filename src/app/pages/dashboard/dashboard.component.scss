@@ -1,0 +1,17 @@
+.subject::before {
+    z-index: -2;
+    content: "";
+    position: absolute;
+    inset: 0;
+    @apply bg-gray-400 rounded-xl;
+}
+.subject::after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--width);
+    @apply bg-untis rounded-xl;
+}

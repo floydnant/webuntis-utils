@@ -1,4 +1,4 @@
-import { Handler } from "@netlify/functions";
+import { Handler } from '@netlify/functions';
 import {
     loginUntis,
     getAbsences,
@@ -6,10 +6,11 @@ import {
     getLessonsForSchoolYear,
     SubjectData,
     UntisCredentials,
-} from "../webuntis";
+} from '../webuntis';
 
-export const handler: Handler = async (event, context) => {
-    const credentials: UntisCredentials = JSON.parse(event.body || "{}");
+export const handler: Handler = async (event, _context) => {
+    const credentials: UntisCredentials = JSON.parse(event.body || '{}');
+
     if (
         !credentials.school ||
         !credentials.password ||
@@ -18,8 +19,9 @@ export const handler: Handler = async (event, context) => {
     )
         return {
             statusCode: 400,
+            // @TODO: figure out how to correctly handle errors here
             errorMessage:
-                "Invalid credentials, please provide school, username, password, and server url.",
+                'Invalid credentials, please provide school, username, password, and server url.',
         };
 
     const result = await loginUntis(credentials, async (untis) => {

@@ -1,11 +1,6 @@
-import {
-    ActionReducer,
-    ActionReducerMap,
-    createFeatureSelector,
-    createSelector,
-    MetaReducer,
-} from '@ngrx/store';
+import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { environment } from '../../environments/environment';
+import { dashboardReducer } from './dashboard.reducer';
 import { userDataReducer } from './user-data.reducer';
 
 export interface UserData {
@@ -24,12 +19,18 @@ export interface SubjectData {
 
 export type UserDataState = UserData | null;
 
+export interface DashboardState {
+    subjects: SubjectData[] | null;
+}
+
 export interface AppState {
     userData: UserDataState;
+    dashboard: DashboardState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
     userData: userDataReducer,
+    dashboard: dashboardReducer,
 };
 
 const debug = (reducer: ActionReducer<AppState>): ActionReducer<AppState> => {

@@ -46,7 +46,7 @@ export class UserDataEffects {
         () =>
             this.actions$.pipe(
                 ofType(userDataActions.loginUser),
-                tap(() => this.router.navigate(['/'])) // @TODO: redirect to dashboard here
+                tap(() => this.router.navigate(['dashboard']))
             ),
         { dispatch: false }
     );

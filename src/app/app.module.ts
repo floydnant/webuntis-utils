@@ -9,9 +9,10 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { effects } from './store/effects';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent],
+    declarations: [AppComponent, LoginComponent, DashboardComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,

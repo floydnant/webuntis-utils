@@ -132,6 +132,7 @@ export const loginUntis = async <T>(
         password,
         serverUrl
     ) as WebUntisType;
+
     await untis.login();
     const result = await callback(untis);
     untis.logout();

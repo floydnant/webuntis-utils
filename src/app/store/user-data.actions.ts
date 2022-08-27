@@ -10,4 +10,6 @@ export const userDataActions = {
         '[ User Data ] login',
         props<{ userData: UserData }>()
     ),
+
+    clearState: createAction('[ User Data ] clear state'),
 };

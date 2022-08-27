@@ -11,6 +11,8 @@
             </p>
             <input #passwordInput type="password" placeholder="Password" />
             <button class="button mt-2 w-full bg-untis">Login</button>
+
+            <button class="text-gray-400 hover:text-untis hover:underline mx-auto" (click)="clearState()">Switch account</button>
         </form>
         <ng-template #fullLoginForm>
             <form
