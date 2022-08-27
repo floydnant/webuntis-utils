@@ -1,0 +1,13 @@
+<main class="h-screen w-screen flex flex-col justify-center items-center">
+    <div>
+        <h1>Login</h1>
+        <form (submit)="$event.preventDefault()" class="w-72 flex flex-col gap-2">
+            <input type="text" placeholder="School">
+            <input type="text" placeholder="Username">
+            <input type="password" placeholder="Password">
+            <input type="url" placeholder="Server URL">
+            
+            <button class="button mt-2 w-full bg-untis">Login</button>
+        </form>
+    </div>
+</main>
