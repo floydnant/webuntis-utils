@@ -1,10 +1,9 @@
-import WebUntisType, { Absences, Lesson, ShortData } from "webuntis";
-const WebUntis = require("webuntis");
-require("dotenv/config");
 import { writeFile, readFile } from "fs/promises";
 import { join } from "path";
+import WebUntisType, { Lesson, ShortData } from "webuntis";
+const WebUntis = require("webuntis");
 
-interface Credentials {
+export interface UntisCredentials {
     school: string;
     username: string;
     password: string;
@@ -15,22 +14,22 @@ interface SchoolYear {
     endDate: Date;
 }
 
-const getSubjectId = (subjects: ShortData[]) => {
+export const getSubjectId = (subjects: ShortData[]) => {
     return subjects.map((su) => `${su.longname} (${su.name})`).join(", ");
 };
 
-const getCurrentSchoolYear = (untis: WebUntisType) => {
+export const getCurrentSchoolYear = (untis: WebUntisType) => {
     return untis.getLatestSchoolyear();
 };
 
-const getLessonsForToday = async (untis: WebUntisType) => {
+export const getLessonsForToday = async (untis: WebUntisType) => {
     const timetable = await untis.getOwnTimetableForToday();
     timetable.forEach((lesson) => console.log(lesson));
 
     return timetable;
 };
 
-const getLessonsForSchoolYear = async (
+export const getLessonsForSchoolYear = async (
     untis: WebUntisType,
     schoolYear: SchoolYear
 ) => {
@@ -39,15 +38,15 @@ const getLessonsForSchoolYear = async (
         schoolYear.endDate
     );
 
-    writeFile(
-        join(__dirname, "../responses/lessons.json"),
-        JSON.stringify(lessons)
-    );
+    // writeFile(
+    //     join(__dirname, "../responses/lessons.json"),
+    //     JSON.stringify(lessons)
+    // );
 
     return lessons;
 };
 
-const reduceSubjects = (lessons: Lesson[]) => {
+export const reduceSubjects = (lessons: Lesson[]) => {
     const subjects = new Map<string, Omit<SubjectData, "presence">>();
 
     lessons.forEach((lesson) => {
@@ -67,14 +66,14 @@ const reduceSubjects = (lessons: Lesson[]) => {
     return subjects;
 };
 
-interface SubjectData {
+export interface SubjectData {
     lessonsTotal: number;
     lessonsCancelled: number;
     lessonsMissed: null | number;
     presence: number;
 }
 
-const getAbsences = async (
+export const getAbsences = async (
     untis: WebUntisType,
     schoolYear: SchoolYear,
     allYearsLessons: Lesson[]
@@ -123,9 +122,9 @@ const getAbsences = async (
     return [...subjectLessonsMap.entries()];
 };
 
-const loginUntis = async (
-    { school, username, password, serverUrl }: Credentials,
-    callback: (untis: WebUntisType) => Promise<any>
+export const loginUntis = async <T>(
+    { school, username, password, serverUrl }: UntisCredentials,
+    callback: (untis: WebUntisType) => Promise<T>
 ) => {
     const untis = new WebUntis(
         school,
@@ -134,55 +133,19 @@ const loginUntis = async (
         serverUrl
     ) as WebUntisType;
     await untis.login();
-    await callback(untis);
-    await untis.logout();
+    const result = await callback(untis);
+    untis.logout();
+    return result;
 };
 
-readFile(join(__dirname, "../responses/lessons.json")).then(async (file) => {
-    const contents = file.toString();
-    const lessons: Lesson[] = JSON.parse(contents);
+// readFile(join(__dirname, "../responses/lessons.json")).then(async (file) => {
+//     const contents = file.toString();
+//     const lessons: Lesson[] = JSON.parse(contents);
 
-    const currentSchoolYear = {
-        name: "2022/2023",
-        id: 19,
-        startDate: new Date("2022-08-21T22:00:00.000Z"),
-        endDate: new Date("2023-07-11T22:00:00.000Z"),
-    };
-
-    loginUntis(
-        {
-            school: process.env.SCHOOL!,
-            username: process.env.USERNAME!,
-            password: process.env.PASSWORD!,
-            serverUrl: process.env.SERVER_URL!,
-        },
-        async (untis) => {
-            // getCurrentSchoolYear(untis);
-            // getLessonsForSchoolYear(untis)
-
-            const absences = await getAbsences(
-                untis,
-                currentSchoolYear,
-                lessons
-            );
-
-            const subjects = absences.map<SubjectData>(([subjectId, absence]) => {
-                const actualLessons =
-                    absence.lessonsTotal - absence.lessonsCancelled;
-                const presenceInPercent = (
-                    ((actualLessons - (absence.lessonsMissed || 0)) /
-                        actualLessons) *
-                    100
-                ).toFixed(2);
-
-                return {
-                    ...absence,
-                    subjectId,
-                    presence: parseFloat(presenceInPercent),
-                    lessonsMissed: absence.lessonsMissed || 0,
-                };
-            });
-            console.log("Absences:", subjects);
-        }
-    );
-});
+//     const currentSchoolYear = {
+//         name: "2022/2023",
+//         id: 19,
+//         startDate: new Date("2022-08-21T22:00:00.000Z"),
+//         endDate: new Date("2023-07-11T22:00:00.000Z"),
+//     };
+// });

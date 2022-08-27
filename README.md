@@ -2,3 +2,5 @@ This is probably just going to be a small serverless api. And maybe with a small
 
 # TODO:
 - [ ] Add Readme
+- [ ] Add eslint
+- [ ] Add 'school start tomorrow' function
