@@ -20,6 +20,8 @@
     "@angular/platform-browser-dynamic": "~12.1.0",
     "@angular/router": "~12.1.0",
     "@netlify/functions": "^1.2.0",
+    "@ngneat/hot-toast": "^3.4.3",
+    "@ngneat/overview": "^2.0.2",
     "@ngrx/effects": "^12.5.1",
     "@ngrx/store": "^12.5.1",
     "rxjs": "~6.6.0",

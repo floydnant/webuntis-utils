@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, mergeEffects, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { userDataActions } from '../user-data.actions';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { UserData } from '..';
 import { appActions } from '../app.actions';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
+import { WebuntisService } from 'src/app/services/webuntis.service';
+import { of } from 'rxjs';
 
 @Injectable()
 export class UserDataEffects {
-    constructor(private actions$: Actions, private router: Router) {}
+    constructor(
+        private actions$: Actions,
+        private router: Router,
+        private webuntis: WebuntisService,
+        private toast: HotToastService
+    ) {}
 
     readonly localStorageKey = 'user-data';
 
@@ -42,10 +50,33 @@ export class UserDataEffects {
         { dispatch: false }
     );
 
+    loginUser = createEffect(() =>
+        this.actions$.pipe(
+            ofType(userDataActions.loginUser),
+            mergeMap(({ userData }) => {
+                return this.webuntis.testCredentials(userData).pipe(
+                    this.toast.observe({
+                        loading: '',
+                        success: (res) => res.message,
+                        error: (res) => res.error.message,
+                    }),
+                    map(() => userDataActions.loginUserSuccess({ userData })),
+                    catchError((err) => {
+                        return of(
+                            userDataActions.loginUserError({
+                                message: err.error.message,
+                            })
+                        );
+                    })
+                );
+            })
+        )
+    );
+
     redirectOnLogin = createEffect(
         () =>
             this.actions$.pipe(
-                ofType(userDataActions.loginUser),
+                ofType(userDataActions.loginUserSuccess),
                 tap(() => this.router.navigate(['dashboard']))
             ),
         { dispatch: false }

@@ -23,4 +23,10 @@ export class WebuntisService {
             this.userData
         );
     }
+    testCredentials(userData: UserDataState) {
+        return this.http.post<{ message: string }>(
+            this.baseUrl + '/check-login',
+            userData
+        );
+    }
 }

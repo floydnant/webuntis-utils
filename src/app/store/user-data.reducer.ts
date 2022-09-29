@@ -8,6 +8,6 @@ export const userDataReducer = createReducer<UserDataState>(
         ...userData,
         password: null,
     })),
-    on(userDataActions.loginUser, (_state, { userData }) => userData),
+    on(userDataActions.loginUserSuccess, (_state, { userData }) => userData),
     on(userDataActions.clearState, () => null)
 );

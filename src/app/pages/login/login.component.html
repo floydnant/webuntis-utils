@@ -29,9 +29,17 @@
             >
                 <input #usernameInput type="text" placeholder="Username" />
                 <input #passwordInput type="password" placeholder="Password" />
-                <input #schoolInput type="text" placeholder="School" />
-                <input #serverUrlInput type="text" placeholder="Server URL" />
 
+                <input #schoolInput type="text" placeholder="School" list="schools" />
+                <datalist id="schools">
+                    <option *ngFor="let schoolName of autoComplete.schools" [value]="schoolName"></option>
+                </datalist>
+                
+                <input #serverUrlInput type="text" placeholder="Server URL" list="servers" />
+                <datalist id="servers">
+                    <option *ngFor="let serverUrl of autoComplete.servers" [value]="serverUrl"></option>
+                </datalist>
+                
                 <button class="button mt-2 w-full bg-untis">Login</button>
             </form>
         </ng-template>

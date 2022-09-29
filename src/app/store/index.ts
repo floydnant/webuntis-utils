@@ -21,6 +21,7 @@ export type UserDataState = UserData | null;
 
 export interface DashboardState {
     subjects: SubjectData[] | null;
+    // @TODO: add loading state
 }
 
 export interface AppState {

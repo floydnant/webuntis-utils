@@ -12,12 +12,12 @@ export interface UntisCredentials {
 export const parseCredentials = (body: any) => {
     const credentials: UntisCredentials = JSON.parse(body || '{}');
 
-    if (!credentials.school)
-        throw new HttpError(400, 'You must provide a schoolname');
-    if (!credentials.password)
-        throw new HttpError(400, 'You must provide a password');
     if (!credentials.username)
         throw new HttpError(400, 'You must provide a username');
+    if (!credentials.password)
+        throw new HttpError(400, 'You must provide a password');
+    if (!credentials.school)
+        throw new HttpError(400, 'You must provide a schoolname');
     if (!credentials.serverUrl)
         throw new HttpError(400, 'You must provide a server url');
 

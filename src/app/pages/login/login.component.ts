@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { WebuntisService } from 'src/app/services/webuntis.service';
 import { AppState, UserData, UserDataState } from 'src/app/store';
 import { userDataActions } from 'src/app/store/user-data.actions';
 
@@ -17,6 +16,12 @@ export class LoginComponent {
                 this.userData = userData;
             });
     }
+
+    // idealy this would sit in a database and update every time a user logges in with a value that is not yet stored
+    autoComplete = {
+        schools: ['OSZ KIM_Berlin'],
+        servers: ['urania.webuntis.com'],
+    };
 
     userData: UserDataState = null;
 

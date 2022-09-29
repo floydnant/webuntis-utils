@@ -10,6 +10,7 @@ import { reducers, metaReducers } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { effects } from './store/effects';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { HotToastModule } from '@ngneat/hot-toast';
 
 @NgModule({
     declarations: [AppComponent, LoginComponent, DashboardComponent],
@@ -21,6 +22,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
             metaReducers,
         }),
         EffectsModule.forRoot(effects),
+        HotToastModule.forRoot(),
     ],
     providers: [],
     bootstrap: [AppComponent],
