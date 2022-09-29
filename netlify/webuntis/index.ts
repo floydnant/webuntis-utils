@@ -1,14 +1,5 @@
-// import { writeFile, readFile } from "fs/promises";
-// import { join } from "path";
 import WebUntisType, { Lesson, ShortData } from 'webuntis';
-const WebUntis = require('webuntis');
 
-export interface UntisCredentials {
-    school: string;
-    username: string;
-    password: string;
-    serverUrl: string;
-}
 interface SchoolYear {
     startDate: Date;
     endDate: Date;
@@ -37,11 +28,6 @@ export const getLessonsForSchoolYear = async (
         schoolYear.startDate,
         schoolYear.endDate
     );
-
-    // writeFile(
-    //     join(__dirname, "../responses/lessons.json"),
-    //     JSON.stringify(lessons)
-    // );
 
     return lessons;
 };
@@ -121,32 +107,3 @@ export const getAbsences = async (
 
     return [...subjectLessonsMap.entries()];
 };
-
-export const loginUntis = async <T>(
-    { school, username, password, serverUrl }: UntisCredentials,
-    callback: (untis: WebUntisType) => Promise<T>
-) => {
-    const untis = new WebUntis(
-        school,
-        username,
-        password,
-        serverUrl
-    ) as WebUntisType;
-
-    await untis.login();
-    const result = await callback(untis);
-    untis.logout();
-    return result;
-};
-
-// readFile(join(__dirname, "../responses/lessons.json")).then(async (file) => {
-//     const contents = file.toString();
-//     const lessons: Lesson[] = JSON.parse(contents);
-
-//     const currentSchoolYear = {
-//         name: "2022/2023",
-//         id: 19,
-//         startDate: new Date("2022-08-21T22:00:00.000Z"),
-//         endDate: new Date("2023-07-11T22:00:00.000Z"),
-//     };
-// });

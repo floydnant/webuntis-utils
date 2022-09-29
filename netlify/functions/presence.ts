@@ -1,30 +1,16 @@
-import { Handler } from '@netlify/functions';
+import { handleRequest } from 'netlify/http-helpers';
+import { loginUntis, parseCredentials } from 'netlify/webuntis/auth';
 import {
-    loginUntis,
     getAbsences,
     getCurrentSchoolYear,
     getLessonsForSchoolYear,
     SubjectData,
-    UntisCredentials,
 } from '../webuntis';
 
-export const handler: Handler = async (event, _context) => {
-    const credentials: UntisCredentials = JSON.parse(event.body || '{}');
+export const handler = handleRequest(async (event) => {
+    const credentials = parseCredentials(event.body);
 
-    if (
-        !credentials.school ||
-        !credentials.password ||
-        !credentials.username ||
-        !credentials.serverUrl
-    )
-        return {
-            statusCode: 400,
-            // @TODO: #6 figure out how to correctly handle errors here
-            errorMessage:
-                'Invalid credentials, please provide school, username, password, and server url.',
-        };
-
-    const result = await loginUntis(credentials, async (untis) => {
+    return await loginUntis(credentials, async (untis) => {
         const schoolYear = await getCurrentSchoolYear(untis);
         const lessons = await getLessonsForSchoolYear(untis, schoolYear);
 
@@ -49,9 +35,4 @@ export const handler: Handler = async (event, _context) => {
 
         return subjects;
     });
-
-    return {
-        statusCode: 200,
-        body: JSON.stringify(result),
-    };
-};
+});
