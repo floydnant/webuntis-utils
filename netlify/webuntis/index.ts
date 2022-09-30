@@ -77,6 +77,17 @@ export const getAbsences = async (
 
     const lessonsMissed = untisAbsences.absences
         .map((absence) => {
+            const startTime = WebUntisType.convertUntisTime(
+                absence.startTime,
+                WebUntisType.convertUntisDate(absence.startDate)
+            );
+            const endTime = WebUntisType.convertUntisTime(
+                absence.endTime,
+                WebUntisType.convertUntisDate(absence.endDate)
+            );
+            const absenceDuration =
+                (endTime.valueOf() - startTime.valueOf()) / 1000 / 60; // convert ms to minutes;
+
             const lessonsMissed = lessonsTakenPlace
                 .filter((lesson) => {
                     const isLessonOnAbsenceDay =
@@ -88,7 +99,12 @@ export const getAbsences = async (
                         lesson.startTime <= absence.startTime &&
                         lesson.endTime >= absence.endTime;
 
-                    return isLessonOnAbsenceDay && isLessonWithinAbsenceTime;
+                    // @TODO: count absences only half, if the duration is under 45 min
+                    return (
+                        isLessonOnAbsenceDay &&
+                        isLessonWithinAbsenceTime &&
+                        absenceDuration >= 20
+                    );
                 })
                 .map(({ su }) => ({ subjectId: getSubjectId(su) }));
 
