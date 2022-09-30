@@ -7,7 +7,7 @@ import { appActions } from '../app.actions';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { WebuntisService } from 'src/app/services/webuntis.service';
-import { of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 
 @Injectable()
 export class UserDataEffects {
@@ -27,7 +27,7 @@ export class UserDataEffects {
                 try {
                     const userData = JSON.parse(
                         localStorage.getItem(this.localStorageKey)!
-                    ) as UserData;
+                    );
                     if (!userData) return appActions.nothing();
                     return userDataActions.loadDataSuccess({ userData });
                 } catch {
@@ -36,19 +36,6 @@ export class UserDataEffects {
             })
         );
     });
-    saveUserData = createEffect(
-        () =>
-            this.actions$.pipe(
-                ofType(userDataActions.loginUser),
-                tap(({ userData }) => {
-                    localStorage.setItem(
-                        this.localStorageKey,
-                        JSON.stringify(userData)
-                    );
-                })
-            ),
-        { dispatch: false }
-    );
 
     loginUser = createEffect(() =>
         this.actions$.pipe(
@@ -56,28 +43,31 @@ export class UserDataEffects {
             mergeMap(({ userData }) => {
                 return this.webuntis.testCredentials(userData).pipe(
                     this.toast.observe({
-                        loading: '',
+                        loading: 'Checking credentials...',
                         success: (res) => res.message,
                         error: (res) => res.error.message,
                     }),
                     map(() => userDataActions.loginUserSuccess({ userData })),
-                    catchError((err) => {
-                        return of(
-                            userDataActions.loginUserError({
-                                message: err.error.message,
-                            })
-                        );
-                    })
+                    catchError(() => EMPTY)
                 );
             })
         )
     );
 
-    redirectOnLogin = createEffect(
+    loginUserSuccess = createEffect(
         () =>
             this.actions$.pipe(
                 ofType(userDataActions.loginUserSuccess),
-                tap(() => this.router.navigate(['dashboard']))
+                tap(({ userData: { password, ...userData } }) => {
+                    // save data for next session
+                    localStorage.setItem(
+                        this.localStorageKey,
+                        JSON.stringify(userData)
+                    );
+
+                    // redirect to dashboard
+                    this.router.navigate(['dashboard']);
+                })
             ),
         { dispatch: false }
     );
