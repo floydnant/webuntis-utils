@@ -16,8 +16,6 @@ export const parseUntisDate = (untisDate: number, untisTime?: number) => {
 
     const { hours, minutes } = parseUntisTime(untisTime);
     const date = new Date(year, month, day, hours, minutes);
-    // @TODO: keep an eye on this, it might fuck things over later
-    date.setUTCHours(hours);
 
     return date;
 };
