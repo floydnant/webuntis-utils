@@ -1,38 +1,95 @@
 import { handleRequest } from 'netlify/http-helpers';
 import { loginUntis, parseCredentials } from 'netlify/webuntis/auth';
 import {
-    getAbsences,
-    getCurrentSchoolYear,
-    getLessonsForSchoolYear,
-    SubjectData,
-} from '../webuntis';
+    joinLessonsWithAbsences,
+    getSubjectsFromLessons,
+} from 'netlify/webuntis/compute';
+import { SubjectDigestWithPresence } from 'netlify/webuntis/entities.model';
+import {
+    digestSubjectMap,
+    digestAbsence,
+    digestLesson,
+} from 'netlify/webuntis/entity-helpers';
+import { getLessonsForSchoolYear } from '../webuntis';
 
 export const handler = handleRequest(async (event) => {
     const credentials = parseCredentials(event.body);
 
     return await loginUntis(credentials, async (untis) => {
-        const schoolYear = await getCurrentSchoolYear(untis);
-        const lessons = await getLessonsForSchoolYear(untis, schoolYear);
+        // const schoolYear = await untis.getLatestSchoolyear();
 
-        const absences = await getAbsences(untis, schoolYear, lessons);
+        // @TODO: add custom range support
+        const dateRange = {
+            startDate: new Date('2022-08-21T22:00:00.000Z'),
+            endDate: new Date(2023, 0, 30),
+        };
 
-        const subjects = absences.map<SubjectData>(([subjectId, absence]) => {
-            const actualLessons =
-                absence.lessonsTotal - absence.lessonsCancelled;
-            const presenceInPercent = (
-                ((actualLessons - (absence.lessonsMissed || 0)) /
-                    actualLessons) *
-                100
-            ).toFixed(2);
+        const lessons = await getLessonsForSchoolYear(untis, dateRange);
+        const untisAbsences = await untis.getAbsentLesson(
+            dateRange.startDate as any,
+            dateRange.endDate as any
+        );
 
-            return {
-                ...absence,
-                subjectId,
-                presence: parseFloat(presenceInPercent),
-                lessonsMissed: absence.lessonsMissed || 0,
-            };
+        const joinedAbsences = joinLessonsWithAbsences(
+            lessons.map(digestLesson),
+            untisAbsences.absences.map(digestAbsence)
+        );
+
+        const subjectDigestEntries = digestSubjectMap(
+            getSubjectsFromLessons(lessons)
+        );
+        const subjectMap = Object.fromEntries(
+            subjectDigestEntries.map(([subjectId, subjectData]) => {
+                return [
+                    subjectId,
+                    {
+                        ...subjectData,
+                        lessonsAbsent: 0,
+                        lessonsLate: 0,
+                    },
+                ];
+            })
+        );
+
+        // Count absences
+        joinedAbsences.forEach((absence) => {
+            const subjectEntry = subjectMap[absence.lesson.subject];
+            if (absence.absenceOverlapWithLesson <= 20)
+                subjectEntry.lessonsLate++;
+
+            if (
+                absence.absenceOverlapWithLesson > 20 &&
+                absence.absenceOverlapWithLesson < 45
+            ) {
+                subjectEntry.lessonsAbsent = subjectEntry.lessonsAbsent + 0.5;
+            }
+
+            if (absence.absenceOverlapWithLesson >= 45)
+                subjectEntry.lessonsAbsent++;
         });
 
-        return subjects;
+        // Calculate presence
+        const subjectDigestsWithPresences = Object.entries(
+            subjectMap
+        ).map<SubjectDigestWithPresence>(
+            ([, { lessonsAbsent, lessonsOccured, ...subjectDigest }]) => {
+                const lessonsPresent = lessonsOccured - lessonsAbsent;
+                const presenceInPercent = lessonsPresent / lessonsOccured;
+
+                return {
+                    ...subjectDigest,
+                    lessonsOccured,
+                    //
+                    lessonsAbsent,
+                    lessonsPresent,
+                    presenceInPercent,
+                };
+            }
+        );
+
+        return {
+            dateRange,
+            subjectDigestsWithPresences,
+        };
     });
 });
