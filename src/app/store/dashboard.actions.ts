@@ -1,10 +1,10 @@
 import { createAction, props } from '@ngrx/store';
-import { SubjectData } from '.';
+import { SubjectDigestWithPresence } from 'netlify/webuntis/entities.model';
 
 export const dashboardActions = {
     loadSubjects: createAction('[ Dashboard ] load subjects'),
     loadSubjectsSuccess: createAction(
         '[ Dashboard ] load subjects success',
-        props<{ subjects: SubjectData[] }>()
+        props<{ subjects: SubjectDigestWithPresence[] }>()
     ),
 };
