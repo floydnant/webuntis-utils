@@ -1,4 +1,5 @@
 import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { SubjectDigestWithPresence } from 'netlify/webuntis/entities.model';
 import { environment } from '../../environments/environment';
 import { dashboardReducer } from './dashboard.reducer';
 import { userDataReducer } from './user-data.reducer';
@@ -9,18 +10,11 @@ export interface UserData {
     school: string;
     serverUrl: string;
 }
-export interface SubjectData {
-    subjectId: string;
-    presence: number;
-    lessonsTotal: number;
-    lessonsCancelled: number;
-    lessonsMissed: number;
-}
 
 export type UserDataState = UserData | null;
 
 export interface DashboardState {
-    subjects: SubjectData[] | null;
+    subjects: SubjectDigestWithPresence[] | null;
     // @TODO: add loading state
 }
 

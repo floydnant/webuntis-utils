@@ -83,7 +83,9 @@ export const handler = handleRequest(async (event) => {
             ).map<SubjectDigestWithPresence>(
                 ([, { lessonsAbsent, lessonsOccured, ...subjectDigest }]) => {
                     const lessonsPresent = lessonsOccured - lessonsAbsent;
-                    const presenceInPercent = lessonsPresent / lessonsOccured;
+                    const presenceInPercent = parseFloat(
+                        ((lessonsPresent / lessonsOccured) * 100).toFixed(2)
+                    );
 
                     return {
                         ...subjectDigest,

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { SubjectDigestWithPresence } from 'netlify/webuntis/entities.model';
 import { of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { WebuntisService } from 'src/app/services/webuntis.service';
-import { SubjectData } from '..';
 import { dashboardActions } from '../dashboard.actions';
 
 @Injectable()
@@ -18,7 +18,9 @@ export class DashboardEffects {
                     'untis-data-subjects'
                 );
                 if (subjectsRaw) {
-                    const subjects = JSON.parse(subjectsRaw) as SubjectData[];
+                    const subjects = JSON.parse(
+                        subjectsRaw
+                    ) as SubjectDigestWithPresence[];
                     return of(
                         dashboardActions.loadSubjectsSuccess({ subjects })
                     );
@@ -30,7 +32,7 @@ export class DashboardEffects {
                             JSON.stringify(subjects)
                         );
                         return dashboardActions.loadSubjectsSuccess({
-                            subjects,
+                            subjects: subjects.subjectDigestsWithPresences,
                         });
                     })
                 );
