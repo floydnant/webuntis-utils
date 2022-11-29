@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { SubjectDigestWithPresence } from 'netlify/webuntis/entities.model';
+import { PresenceResponse } from 'netlify/functions/presence';
 import { of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { WebuntisService } from 'src/app/services/webuntis.service';
@@ -20,9 +20,11 @@ export class DashboardEffects {
                 if (subjectsRaw) {
                     const subjects = JSON.parse(
                         subjectsRaw
-                    ) as SubjectDigestWithPresence[];
+                    ) as PresenceResponse;
                     return of(
-                        dashboardActions.loadSubjectsSuccess({ subjects })
+                        dashboardActions.loadSubjectsSuccess({
+                            subjects: subjects.subjectDigestsWithPresences,
+                        })
                     );
                 }
                 return this.untis.getPresences().pipe(
