@@ -3,8 +3,8 @@ import { DateRange } from 'netlify/utils/time-utils';
 import { getLessonsForSchoolYear } from 'netlify/webuntis';
 import { loginUntis, parseCredentials } from 'netlify/webuntis/auth';
 import { joinLessonsWithAbsences } from 'netlify/webuntis/compute';
+import { LessonJoinedWithAbsence } from 'netlify/webuntis/entities.model';
 import { digestAbsence, digestLesson } from 'netlify/webuntis/entity-helpers';
-import { LessonJoinedWithAbsence } from '/Users/floyd/coding/projects/webuntis-utils/netlify/webuntis/entities.model';
 
 export interface AbsencesResponse {
     dateRange: DateRange;
