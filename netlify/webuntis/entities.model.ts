@@ -31,18 +31,17 @@ export interface SubjectDigestWithPresence extends SubjectDigest {
 export interface AbsenceReadable {
     absenceTimeRange: TimeRangeWithDuration;
     untisTimeRange: UntisTimeRangeMultiDay;
-    untisAbsence: {
-        id: number;
-        createdAt: Date;
-        createdBy: string;
-        lastUpdatedAt: Date;
-        lastUpdatedBy: string;
-        studentName: string;
-        isExcused: boolean;
-        excuseStatus: string;
-        reason: string;
-        text: string;
-    };
+    id: number;
+    createdAt: Date;
+    createdBy: string;
+    lastUpdatedAt: Date;
+    lastUpdatedBy: string;
+    studentName: string;
+    isExcused: boolean;
+    excuseStatus: string;
+    reason: string;
+    text: string;
+    excuseProccessedAt: Date;
 }
 
 export interface LessonReadable {
@@ -66,43 +65,8 @@ export interface LessonReadable {
     };
 }
 
-// @TODO: not quite happy with this, lets rethink and get it cleaner
 export interface LessonJoinedWithAbsence {
-    startTime: Date;
-    endTime: Date;
-    absenceDuration: number;
     absenceOverlapWithLesson: number;
-    absence: {
-        id: number;
-        createdAt: Date;
-        createdBy: string;
-        lastUpdatedAt: Date;
-        lastUpdatedBy: string;
-        studentName: string;
-        isExcused: boolean;
-        excuseStatus: string;
-        reason: string;
-        text: string;
-    };
-    lesson: {
-        id: number;
-        teachers: string;
-        subject: string;
-        rooms: string;
-        code?: 'cancelled' | 'irregular';
-        info?: string;
-        otherInfo: {
-            activityType?: string;
-            bkRemark?: string;
-            bkText?: string;
-            lsnumber: number;
-            lstext?: string;
-            sg?: string;
-            statflags?: string;
-            substText?: string;
-        };
-        duration: number;
-        startTime: Date;
-        endTime: Date;
-    };
+    absence: Omit<AbsenceReadable, 'absenceTimeRange'> & TimeRangeWithDuration;
+    lesson: Omit<LessonReadable, 'lessonTimeRange'> & TimeRangeWithDuration;
 }

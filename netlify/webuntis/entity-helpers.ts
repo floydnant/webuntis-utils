@@ -1,4 +1,4 @@
-import { getTimeRange } from 'netlify/utils/time-utils';
+import { getTimeRange, parseUntisDate } from 'netlify/utils/time-utils';
 import { Absence, Lesson, ShortData } from 'webuntis';
 import {
     AbsenceReadable,
@@ -53,6 +53,7 @@ export const digestAbsence = (absence: Absence): AbsenceReadable => {
         excuseStatus,
         reason,
         text,
+        excuse,
     } = absence;
 
     return {
@@ -63,18 +64,17 @@ export const digestAbsence = (absence: Absence): AbsenceReadable => {
             startTime,
             endTime,
         },
-        untisAbsence: {
-            id,
-            createdAt: new Date(createDate),
-            createdBy: createdUser,
-            lastUpdatedAt: new Date(lastUpdate),
-            lastUpdatedBy: updatedUser,
-            studentName,
-            isExcused,
-            excuseStatus,
-            reason,
-            text,
-        },
+        id,
+        createdAt: new Date(createDate),
+        createdBy: createdUser,
+        lastUpdatedAt: new Date(lastUpdate),
+        lastUpdatedBy: updatedUser,
+        studentName,
+        text,
+        reason,
+        isExcused,
+        excuseStatus,
+        excuseProccessedAt: parseUntisDate(excuse.excuseDate),
     };
 };
 

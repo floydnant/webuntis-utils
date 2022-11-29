@@ -41,7 +41,6 @@ export const getSubjectsFromLessons = (lessons: Lesson[]) => {
     return subjectMap;
 };
 
-// @TODO: not quite happy with this, lets rethink and get it cleaner
 export const joinLessonsWithAbsences = (
     untisLessons: LessonReadable[],
     absencesReadable: AbsenceReadable[]
@@ -49,7 +48,7 @@ export const joinLessonsWithAbsences = (
     const absencesByLesson = untisLessons
         .map(({ lessonTimeRange, ...lessonReadable }) => {
             const absencesOverlapping = absencesReadable
-                .map(({ untisAbsence, absenceTimeRange }) => {
+                .map(({ absenceTimeRange, ...untisAbsence }) => {
                     const { isOverlapping, overlap } = getTimeRangeOverlap(
                         lessonTimeRange,
                         absenceTimeRange
@@ -58,7 +57,7 @@ export const joinLessonsWithAbsences = (
                     return {
                         isAbsenceWithinLessonTime: isOverlapping,
                         overlap,
-                        absenceTimeRange,
+                        ...absenceTimeRange,
                         ...untisAbsence,
                     };
                 })
@@ -66,23 +65,16 @@ export const joinLessonsWithAbsences = (
 
             return {
                 lesson: { ...lessonTimeRange, ...lessonReadable },
-                absences: absencesOverlapping,
+                absencesOverlapping,
             };
         })
-        .filter((lesson) => lesson.absences.length);
+        .filter((lesson) => lesson.absencesOverlapping.length);
 
-    const absenceJoinedWithLesson =
+    const lessonsJoinedWithAbsences =
         absencesByLesson.flatMap<LessonJoinedWithAbsence>(
-            ({ lesson: { untisTimeRange, ...lesson }, absences }) => {
-                return absences.map(
-                    ({
-                        isAbsenceWithinLessonTime,
-                        overlap,
-                        absenceTimeRange: { duration, ...timeRange },
-                        ...absence
-                    }) => ({
-                        ...timeRange,
-                        absenceDuration: duration,
+            ({ lesson, absencesOverlapping }) => {
+                return absencesOverlapping.map(
+                    ({ isAbsenceWithinLessonTime, overlap, ...absence }) => ({
                         absenceOverlapWithLesson: overlap,
                         absence,
                         lesson,
@@ -91,5 +83,5 @@ export const joinLessonsWithAbsences = (
             }
         );
 
-    return absenceJoinedWithLesson;
+    return lessonsJoinedWithAbsences;
 };
