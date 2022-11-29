@@ -1,4 +1,5 @@
 import { handleRequest } from 'netlify/http-helpers';
+import { DateRange } from 'netlify/utils/time-utils';
 import { loginUntis, parseCredentials } from 'netlify/webuntis/auth';
 import { getSubjectsFromLessons } from 'netlify/webuntis/compute';
 import { SubjectDigest } from 'netlify/webuntis/entities.model';
@@ -6,10 +7,7 @@ import { digestSubjectMap } from 'netlify/webuntis/entity-helpers';
 import { getLessonsForSchoolYear } from '../webuntis';
 
 export interface SubjectsResponse {
-    dateRange: {
-        startDate: Date;
-        endDate: Date;
-    };
+    dateRange: DateRange;
     subjectDigests: SubjectDigest[];
 }
 

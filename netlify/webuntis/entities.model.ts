@@ -15,7 +15,7 @@ export type SubjectMap = Record<
 >;
 export interface SubjectDigest {
     subjectId: string;
-    lsnumbers: number;
+    lsnumbers: number[];
     regularLessons: number;
     lessonsCancelled: number;
     lessonsOccured: number;
@@ -53,11 +53,11 @@ export interface LessonReadable {
     rooms: string;
     code?: 'cancelled' | 'irregular';
     info?: string;
+    lsnumber: number;
     otherInfo: {
         activityType?: string;
         bkRemark?: string;
         bkText?: string;
-        lsnumber: number;
         lstext?: string;
         sg?: string;
         statflags?: string;

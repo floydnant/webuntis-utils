@@ -22,7 +22,7 @@ export const digestSubjectMap = (subjectMap: SubjectMap) => {
                 subjectId,
                 {
                     subjectId,
-                    lsnumbers: subject.lsnumbers.size,
+                    lsnumbers: Array.from(subject.lsnumbers.values()),
                     regularLessons,
                     lessonsCancelled,
                     lessonsOccured: regularLessons - lessonsCancelled,
@@ -93,11 +93,11 @@ export const digestLesson = (lesson: Lesson): LessonReadable => ({
         .join(', '),
     code: lesson.code,
     info: lesson.info,
+    lsnumber: lesson.lsnumber,
     otherInfo: {
         activityType: lesson.activityType,
         bkRemark: lesson.bkRemark,
         bkText: lesson.bkText,
-        lsnumber: lesson.lsnumber,
         lstext: lesson.lstext,
         sg: lesson.sg,
         statflags: lesson.statflags,
