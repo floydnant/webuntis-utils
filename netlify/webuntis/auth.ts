@@ -1,6 +1,5 @@
 import { HttpError } from 'netlify/http-helpers';
-import WebUntisType from 'webuntis';
-const WebUntis = require('webuntis');
+import WebUntis from 'webuntis';
 
 export interface UntisCredentials {
     school: string;
@@ -26,14 +25,9 @@ export const parseCredentials = (body: any) => {
 
 export const loginUntis = async <T>(
     { school, username, password, serverUrl }: UntisCredentials,
-    callback: (untis: WebUntisType) => Promise<T>
+    callback: (untis: WebUntis) => Promise<T>
 ) => {
-    const untis = new WebUntis(
-        school,
-        username,
-        password,
-        serverUrl
-    ) as WebUntisType;
+    const untis = new WebUntis(school, username, password, serverUrl);
 
     try {
         await untis.login();
