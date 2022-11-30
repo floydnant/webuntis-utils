@@ -1,8 +1,19 @@
-<main class="h-screen w-screen flex flex-col justify-center items-center">
-    <h1>Dashboard <span class="text-gray-500">for {{ username$ | async}}</span></h1>
-    <!-- @TODO: #8 add loading state -->
-    <!-- @TODO: #8 add reload button -->
-    <div class="subjects | grid grid-cols-2 gap-3 max-w-5xl">
+<div class="flex gap-4 justify-start items-center mb-3">
+    <h1>
+        Dashboard <span class="text-gray-500">for {{ username$ | async }}</span>
+    </h1>
+    <button
+        class="text-gray-400 hover:text-untis hover:underline mt-3"
+        (click)="clearState()"
+    >
+        Switch account
+    </button>
+</div>
+<router-outlet></router-outlet>
+
+<!-- <main class="h-screen w-screen flex flex-col justify-center items-center"> -->
+
+<!-- <div class="subjects | grid grid-cols-2 gap-3 max-w-5xl">
         <div
             *ngFor="let subject of subjects$ | async"
             class="subject | relative text-gray-900 py-2 px-3 flex flex-col justify-center items-center rounded-xl"
@@ -18,6 +29,5 @@
                 }}</span>
             </span>
         </div>
-    </div>
-    <button class="text-gray-400 hover:text-untis hover:underline mt-3 mx-auto" (click)="clearState()">Switch account</button>
-</main>
+    </div> -->
+<!-- </main> -->

@@ -17,7 +17,6 @@ export class DashboardComponent implements OnInit {
         this.store.dispatch(dashboardActions.loadSubjects());
     }
 
-    subjects$ = this.store.select((state) => state.dashboard.subjects);
     username$ = this.store.select((state) => state.userData?.username);
 
     clearState() {

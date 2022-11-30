@@ -1,0 +1,26 @@
+.subject-card:is(:hover, .glow) {
+    --tw-scale-x: 1.02;
+    --tw-scale-y: 1.02;
+    .progress :first-child {
+        box-shadow: 0 0 10px #{"theme(colors.untis)"};
+    }
+}
+
+.chip {
+    @apply inline-block px-2 m-1 rounded-full border transition-colors border-gray-600 group-hover:border-untis;
+
+    .title {
+        @apply text-gray-500;
+    }
+}
+
+.chip.special {
+    @apply group-hover:bg-untis;
+
+    .title {
+        @apply group-hover:text-gray-800;
+    }
+    .number {
+        @apply font-bold group-hover:text-gray-900;
+    }
+}
