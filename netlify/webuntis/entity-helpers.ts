@@ -41,10 +41,10 @@ export const digestAbsence = (absence: Absence): AbsenceReadable => {
         isExcused,
         studentName,
 
-        startDate,
-        endDate,
-        startTime,
-        endTime,
+        // startDate,
+        // endDate,
+        // startTime,
+        // endTime,
 
         createDate,
         createdUser,
@@ -58,12 +58,12 @@ export const digestAbsence = (absence: Absence): AbsenceReadable => {
 
     return {
         absenceTimeRange,
-        untisTimeRange: {
-            startDate,
-            endDate,
-            startTime,
-            endTime,
-        },
+        // untisTimeRange: {
+        //     startDate,
+        //     endDate,
+        //     startTime,
+        //     endTime,
+        // },
         id,
         createdAt: new Date(createDate),
         createdBy: createdUser,
@@ -81,11 +81,11 @@ export const digestAbsence = (absence: Absence): AbsenceReadable => {
 export const digestLesson = (lesson: Lesson): LessonReadable => ({
     id: lesson.id,
     lessonTimeRange: getTimeRange(lesson),
-    untisTimeRange: {
-        date: lesson.date,
-        startTime: lesson.startTime,
-        endTime: lesson.endTime,
-    },
+    // untisTimeRange: {
+    //     date: lesson.date,
+    //     startTime: lesson.startTime,
+    //     endTime: lesson.endTime,
+    // },
     teachers: lesson.te.map((teacher) => teacher.longname).join(', '),
     subject: getSubjectId(lesson.su),
     rooms: lesson.ro

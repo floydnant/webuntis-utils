@@ -4,8 +4,13 @@ import { loginUntis, parseCredentials } from 'netlify/webuntis/auth';
 import {
     joinLessonsWithAbsences,
     getSubjectsFromLessons,
+    groupAbsenceEntriesByDay,
+    joinAbsencesWithLessons,
 } from 'netlify/webuntis/compute';
-import { SubjectDigestWithPresence } from 'netlify/webuntis/entities.model';
+import {
+    LessonJoinedWithAbsence,
+    SubjectDigestWithPresence,
+} from 'netlify/webuntis/entities.model';
 import {
     digestSubjectMap,
     digestAbsence,
@@ -16,6 +21,8 @@ import { getLessonsForSchoolYear } from '../webuntis';
 export interface PresenceResponse {
     dateRange: DateRange;
     subjectDigestsWithPresences: SubjectDigestWithPresence[];
+    lessonsWithAbsence: LessonJoinedWithAbsence[];
+    absencesGroupedByDay: ReturnType<typeof groupAbsenceEntriesByDay>;
 }
 
 export const handler = handleRequest(async (event) => {
@@ -38,7 +45,7 @@ export const handler = handleRequest(async (event) => {
                 dateRange.endDate as any
             );
 
-            const joinedAbsences = joinLessonsWithAbsences(
+            const lessonsJoinedWithAbsences = joinLessonsWithAbsences(
                 lessons.map(digestLesson),
                 untisAbsences.absences.map(digestAbsence)
             );
@@ -60,7 +67,7 @@ export const handler = handleRequest(async (event) => {
             );
 
             // Count absences
-            joinedAbsences.forEach((absence) => {
+            lessonsJoinedWithAbsences.forEach((absence) => {
                 const subjectEntry = subjectMap[absence.lesson.subject];
                 if (absence.absenceOverlapWithLesson <= 20)
                     subjectEntry.lessonsLate++;
@@ -98,9 +105,19 @@ export const handler = handleRequest(async (event) => {
                 }
             );
 
+            const lessonsGroupedByAbsences = joinAbsencesWithLessons(
+                lessons.map(digestLesson),
+                untisAbsences.absences.map(digestAbsence)
+            );
+            const absencesGroupedByDay = groupAbsenceEntriesByDay(
+                lessonsGroupedByAbsences
+            );
+
             return {
                 dateRange,
                 subjectDigestsWithPresences,
+                lessonsWithAbsence: lessonsJoinedWithAbsences,
+                absencesGroupedByDay,
             };
         }
     );

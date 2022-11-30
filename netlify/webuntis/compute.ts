@@ -85,3 +85,72 @@ export const joinLessonsWithAbsences = (
 
     return lessonsJoinedWithAbsences;
 };
+
+export const joinAbsencesWithLessons = (
+    digestedLessons: LessonReadable[],
+    digestedAbsences: AbsenceReadable[]
+) => {
+    const absenceGroups = digestedAbsences.map((absence) => {
+        const { absenceTimeRange, ...restAbsence } = absence;
+
+        const lessons = digestedLessons
+            .map((lesson) => {
+                const { lessonTimeRange, ...restLesson } = lesson;
+
+                const { isOverlapping, overlap } = getTimeRangeOverlap(
+                    lessonTimeRange,
+                    absenceTimeRange
+                );
+
+                return {
+                    isOverlapping,
+                    overlap,
+                    ...lessonTimeRange,
+                    ...restLesson,
+                };
+            })
+            .filter(({ isOverlapping }) => isOverlapping)
+            .map(({ isOverlapping, ...lesson }) => lesson)
+            .sort(
+                (a, b) =>
+                    new Date(a.startTime).valueOf() -
+                    new Date(b.startTime).valueOf()
+            );
+
+        return {
+            ...absenceTimeRange,
+            ...restAbsence,
+            lessons,
+        };
+    });
+
+    return absenceGroups
+        .sort(
+            (a, b) =>
+                new Date(a.startTime).valueOf() -
+                new Date(b.startTime).valueOf()
+        )
+        .reverse();
+};
+
+export const groupAbsenceEntriesByDay = (
+    absenceEntries: ReturnType<typeof joinAbsencesWithLessons>
+) => {
+    const dayAbsenceMap: Record<string, typeof absenceEntries> = {};
+
+    absenceEntries.forEach((entry) => {
+        const year = entry.startTime.getFullYear();
+        const month = entry.startTime.getMonth();
+        const day = entry.startTime.getDate();
+
+        const timestamp = new Date(year, month, day).toISOString();
+
+        if (dayAbsenceMap[timestamp]) dayAbsenceMap[timestamp].push(entry);
+        else dayAbsenceMap[timestamp] = [entry];
+    });
+
+    return Object.entries(dayAbsenceMap).map(([timestamp, absenceGroup]) => ({
+        timestamp,
+        absenceGroup,
+    }));
+};
