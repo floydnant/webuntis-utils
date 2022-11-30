@@ -1,10 +1,5 @@
 <div class="">
-    <!-- @TODO: #8 add reload button -->
-    <p class="loading | flex justify-center items-center" *ngIf="isLoading$ | async" style="height: 70vh;">
-        <i class="fad fa-spinner-third animate-spin text-9xl"></i>
-    </p>
     <div
-        *ngIf="!(isLoading$ | async)"
         class="grid gap-3"
         style="grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr))"
     >
@@ -14,7 +9,7 @@
         >
             <p class="name | font-bold text-xl">{{ subject.subjectId }}</p>
 
-            <div class="chips">
+            <div class="chips | my-1 flex flex-wrap gap-2">
                 <p class="chip">
                     <span class="title">Scheduled:</span>&nbsp;<span
                         class="number"
@@ -67,8 +62,6 @@
             </div>
         </div>
     </div>
-</div>
 
-<!-- <pre>
-    {{ subjects$ | async | json }}
-</pre> -->
+
+</div>

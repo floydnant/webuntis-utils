@@ -17,36 +17,33 @@ export class DashboardEffects {
 
     loadSubjects = createEffect(() => {
         return this.actions$.pipe(
-            ofType(dashboardActions.loadSubjects),
+            ofType(dashboardActions.loadDashboard),
             mergeMap(() => {
-                const subjectsRaw = sessionStorage.getItem(
-                    'untis-data-subjects'
-                );
-                if (subjectsRaw) {
-                    const subjects = JSON.parse(
-                        subjectsRaw
+                const dashboardDataRaw =
+                    sessionStorage.getItem('dashboard-data');
+                if (dashboardDataRaw) {
+                    const dashboardData = JSON.parse(
+                        dashboardDataRaw
                     ) as PresenceResponse;
                     return of(
-                        dashboardActions.loadSubjectsSuccess({
-                            subjects: subjects.subjectDigestsWithPresences,
-                        })
+                        dashboardActions.loadDashboardSuccess(dashboardData)
                     );
                 }
                 return this.untis.getPresences().pipe(
-                    map((subjects) => {
+                    map((dashboardData) => {
                         sessionStorage.setItem(
-                            'untis-data-subjects',
-                            JSON.stringify(subjects)
+                            'dashboard-data',
+                            JSON.stringify(dashboardData)
                         );
-                        return dashboardActions.loadSubjectsSuccess({
-                            subjects: subjects.subjectDigestsWithPresences,
-                        });
+                        return dashboardActions.loadDashboardSuccess(
+                            dashboardData
+                        );
                     })
                 );
             }),
             catchError(() => {
                 this.toast.error('Failed to load subjects');
-                return of(dashboardActions.loadSubjectsError());
+                return of(dashboardActions.loadDashboardError());
             })
         );
     });

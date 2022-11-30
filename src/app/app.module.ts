@@ -12,9 +12,10 @@ import { effects } from './store/effects';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { SubjectsComponent } from './pages/dashboard/subjects/subjects.component';
+import { AbsencesComponent } from './pages/dashboard/absences/absences.component';
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, DashboardComponent, SubjectsComponent],
+    declarations: [AppComponent, LoginComponent, DashboardComponent, SubjectsComponent, AbsencesComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,

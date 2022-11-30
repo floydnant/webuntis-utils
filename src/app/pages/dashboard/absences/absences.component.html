@@ -1,0 +1,109 @@
+<div class="flex md:block">
+    <div class="absences-by-day | flex flex-col gap-3 mt-4 mx-auto max-w-4xl">
+        <div
+            class="day-entry-card | bg-gray-900 rounded-lg p-3 flex flex-col gap-2 shadow-md cursor-default"
+            *ngFor="let dayEntry of groupedAbsences$ | async"
+        >
+            <p class="name | font-bold text-xl mb-1">
+                {{ dayEntry.timestamp | date }},
+                <span class="text-gray-400">{{
+                    dayEntry.timestamp | date: "EEEE"
+                }}</span>
+            </p>
+            <div
+                class="absence-card | md:flex flex-wrap relative"
+                *ngFor="
+                    let absence of dayEntry.absenceGroup;
+                    let isFirst = first
+                "
+                [class.mt-2]="!isFirst"
+                [class.pt-3]="!isFirst"
+            >
+                <hr
+                    class="absolute top-0 w-full border-gray-800"
+                    *ngIf="!isFirst"
+                />
+                <div class="absence-info | md:w-1/2">
+                    <div class="time | text-gray-500">
+                        {{ absence.startTime | date: "shortTime" }} -
+                        {{ absence.endTime | date: "shortTime" }}
+                    </div>
+                    <div
+                        class="excuse-status | chip my-1.5"
+                        [class.border-red-800]="!absence.isExcused"
+                        [class.border-green-800]="absence.isExcused"
+                    >
+                        {{ absence.reason }}
+                        <span
+                            class="excuse-status"
+                            [class.text-red-400]="!absence.isExcused"
+                            [class.text-green-400]="absence.isExcused"
+                            >{{ absence.excuseStatus }}</span
+                        >
+                    </div>
+                    <p
+                        class="absence-text | text-gray-100 mb-1"
+                        *ngIf="absence.text"
+                    >
+                        {{ absence.text }}
+                    </p>
+                    <p class="created-info | text-gray-500">
+                        Created at
+                        <span class="text-gray-400">{{
+                            absence.createdAt | date: "shortTime"
+                        }}</span>
+                        by
+                        <span class="text-gray-400">{{
+                            absence.createdBy
+                        }}</span>
+                    </p>
+                    <p class="updated-info | text-gray-500">
+                        Last updated at
+                        {{ absence.lastUpdatedAt | date: "MMM d" }},
+                        <span class="text-gray-400">
+                            {{
+                                absence.lastUpdatedAt | date: "shortTime"
+                            }}</span
+                        >
+                        by
+                        <span class="text-gray-400">{{
+                            absence.lastUpdatedBy
+                        }}</span>
+                    </p>
+                </div>
+                <!-- <p class="text-lg font-semibold my-2">Lessons missed</p> -->
+                <div class="lessons | mt-5">
+                    <div
+                        class="lesson-card"
+                        *ngFor="
+                            let lesson of absence.lessons;
+                            let isFirst = first
+                        "
+                        title="{{
+                            lesson.code ? (lesson.code | titlecase) + '! ' : ''
+                        }}Lesson: {{
+                            lesson.startTime | date: 'shortTime'
+                        }} - {{ lesson.endTime | date: 'shortTime' }}{{
+                            lesson.info ? ', Info: ' + lesson.info : ''
+                        }}"
+                    >
+                        <div
+                            class="timeline-path | h-2 border-l transform translate-x-4 border-gray-600"
+                            *ngIf="!isFirst"
+                        ></div>
+                        <div
+                            class="flex items-center gap-1 flex-wrap"
+                            [class.line-through]="lesson.code == 'cancelled'"
+                            [class.text-gray-400]="lesson.code == 'cancelled'"
+                            [class.text-untis]="lesson.code == 'irregular'"
+                        >
+                            <p class="chip">{{ lesson.overlap }}&nbsp;min</p>
+                            <p class="mx-1">{{ lesson.subject }}</p>
+                            <p class="text-gray-600">{{ lesson.teachers }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

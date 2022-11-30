@@ -1,5 +1,5 @@
 import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
-import { SubjectDigestWithPresence } from 'netlify/webuntis/entities.model';
+import { PresenceResponse } from 'netlify/functions/presence';
 import { environment } from '../../environments/environment';
 import { dashboardReducer } from './dashboard.reducer';
 import { userDataReducer } from './user-data.reducer';
@@ -13,10 +13,9 @@ export interface UserData {
 
 export type UserDataState = UserData | null;
 
-export interface DashboardState {
-    subjects: SubjectDigestWithPresence[] | null;
-    // @TODO: add loading state
-}
+export type DashboardState = {
+    [key in keyof PresenceResponse]: PresenceResponse[key] | null;
+};
 
 export interface AppState {
     userData: UserDataState;
