@@ -7,4 +7,5 @@ export const dashboardActions = {
         '[ Dashboard ] load subjects success',
         props<{ subjects: SubjectDigestWithPresence[] }>()
     ),
+    loadSubjectsError: createAction('[ Dashboard ] load subjects error'),
 };

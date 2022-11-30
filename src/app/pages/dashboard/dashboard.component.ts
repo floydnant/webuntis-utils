@@ -13,9 +13,7 @@ import { userDataActions } from 'src/app/store/user-data.actions';
 export class DashboardComponent implements OnInit {
     constructor(private store: Store<AppState>, private router: Router) {}
 
-    ngOnInit(): void {
-        this.store.dispatch(dashboardActions.loadSubjects());
-    }
+    ngOnInit(): void {}
 
     username$ = this.store.select((state) => state.userData?.username);
 

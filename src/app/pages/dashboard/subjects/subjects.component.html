@@ -1,10 +1,13 @@
 <div class="">
+    <!-- @TODO: #8 add reload button -->
+    <p class="loading | flex justify-center items-center" *ngIf="isLoading$ | async" style="height: 70vh;">
+        <i class="fad fa-spinner-third animate-spin text-9xl"></i>
+    </p>
     <div
+        *ngIf="!(isLoading$ | async)"
         class="grid gap-3"
         style="grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr))"
     >
-        <!-- @TODO: #8 add loading state -->
-        <!-- @TODO: #8 add reload button -->
         <div
             class="subject-card | bg-gray-900 rounded-lg p-3 transform-gpu transition-all duration-150 shadow-md group flex flex-col justify-between cursor-default"
             *ngFor="let subject of subjects$ | async"
