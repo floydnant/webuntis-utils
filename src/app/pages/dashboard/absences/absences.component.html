@@ -29,7 +29,7 @@
                         {{ absence.endTime | date: "shortTime" }}
                     </div>
                     <div
-                        class="excuse-status | chip my-1.5"
+                        class="excuse-status | chip | my-1.5"
                         [class.border-red-800]="!absence.isExcused"
                         [class.border-green-800]="absence.isExcused"
                     >
@@ -38,7 +38,7 @@
                             class="excuse-status"
                             [class.text-red-400]="!absence.isExcused"
                             [class.text-green-400]="absence.isExcused"
-                            >{{ absence.excuseStatus }}</span
+                            >{{ absence.excuseStatus || (!absence.reason ? '&lt;No data>' : '') }}</span
                         >
                     </div>
                     <p
@@ -71,8 +71,8 @@
                         }}</span>
                     </p>
                 </div>
-                <!-- <p class="text-lg font-semibold my-2">Lessons missed</p> -->
-                <div class="lessons | mt-5">
+                
+                <div class="lessons | mt-5 md:w-1/2">
                     <div
                         class="lesson-card"
                         *ngFor="
