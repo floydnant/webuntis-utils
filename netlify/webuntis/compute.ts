@@ -151,6 +151,8 @@ export const groupAbsenceEntriesByDay = (
 
     return Object.entries(dayAbsenceMap).map(([timestamp, absenceGroup]) => ({
         timestamp,
-        absenceGroup,
+        absenceGroup: absenceGroup.sort(
+            (a, b) => a.startTime.valueOf() - b.startTime.valueOf()
+        ),
     }));
 };
