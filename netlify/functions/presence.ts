@@ -35,45 +35,34 @@ export const handler = handleRequest(async (event) => {
 
             // @TODO: add custom range support
             // @FIXME: the problem is here with the custom date range
-            const dateRange: DateRange = {
+            const customDateRange: DateRange = {
                 startDate: new Date('2022-08-21T22:00:00.000Z'),
                 endDate: new Date(2023, 0, 30),
             };
+            const dateRange: DateRange = schoolYear;
 
             console.log('SCHOOL YEAR: ', schoolYear);
+            console.log('SCHOOL YEAR: START:', schoolYear.startDate);
             console.log(
-                'DATE RANGE: string START:',
-                schoolYear.startDate.toString()
-            );
-            console.log(
-                'DATE RANGE: is Date START:',
+                'SCHOOL YEAR: is Date START:',
                 schoolYear.startDate instanceof Date
             );
+            console.log('SCHOOL YEAR: END:', schoolYear.endDate);
             console.log(
-                'DATE RANGE: string END:',
-                schoolYear.endDate.toString()
-            );
-            console.log(
-                'DATE RANGE: is Date END:',
+                'SCHOOL YEAR: is Date END:',
                 schoolYear.endDate instanceof Date
             );
 
-            console.log('DATE RANGE: ', dateRange);
-            console.log(
-                'DATE RANGE: string START:',
-                dateRange.startDate.toString()
-            );
+            console.log('DATE RANGE: ', customDateRange);
+            console.log('DATE RANGE: START:', customDateRange.startDate);
             console.log(
                 'DATE RANGE: is Date START:',
-                dateRange.startDate instanceof Date
+                customDateRange.startDate instanceof Date
             );
-            console.log(
-                'DATE RANGE: string END:',
-                dateRange.endDate.toString()
-            );
+            console.log('DATE RANGE: END:', customDateRange.endDate);
             console.log(
                 'DATE RANGE: is Date END:',
-                dateRange.endDate instanceof Date
+                customDateRange.endDate instanceof Date
             );
 
             const lessons = await getLessonsForSchoolYear(untis, dateRange);
