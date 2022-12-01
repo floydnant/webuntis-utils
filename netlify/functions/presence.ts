@@ -33,9 +33,9 @@ export const handler = handleRequest(async (event) => {
         async (untis): Promise<PresenceResponse> => {
             // const schoolYear = await untis.getLatestSchoolyear();
 
-            // @TODO: add custom range support
-            const dateRange = {
-                startDate: new Date('2022-08-21T22:00:00.000Z'),
+            // @TODO: add custom range support / semester choosing feature
+            const dateRange: DateRange = {
+                startDate: new Date(2022, 7, 22),
                 endDate: new Date(2023, 0, 30),
             };
 
