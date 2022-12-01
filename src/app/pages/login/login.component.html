@@ -30,12 +30,12 @@
                 <input #usernameInput type="text" placeholder="Username" />
                 <input #passwordInput type="password" placeholder="Password" />
 
-                <input #schoolInput type="text" placeholder="School" list="schools" />
+                <input #schoolInput type="text" placeholder="School" list="schools" [value]="autoComplete.schools[0]" />
                 <datalist id="schools">
                     <option *ngFor="let schoolName of autoComplete.schools" [value]="schoolName"></option>
                 </datalist>
                 
-                <input #serverUrlInput type="text" placeholder="Server URL" list="servers" />
+                <input #serverUrlInput type="text" placeholder="Server URL" list="servers" [value]="autoComplete.servers[0]" />
                 <datalist id="servers">
                     <option *ngFor="let serverUrl of autoComplete.servers" [value]="serverUrl"></option>
                 </datalist>

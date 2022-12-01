@@ -1,0 +1,67 @@
+<div class="">
+    <div
+        class="grid gap-3"
+        style="grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr))"
+    >
+        <div
+            class="subject-card | bg-gray-900 rounded-lg p-3 transform-gpu transition-all duration-150 shadow-md group flex flex-col justify-between cursor-default"
+            *ngFor="let subject of subjects$ | async"
+        >
+            <p class="name | font-bold text-xl">{{ subject.subjectId }}</p>
+
+            <div class="chips | my-1 flex flex-wrap gap-2">
+                <p class="chip">
+                    <span class="title">Scheduled:</span>&nbsp;<span
+                        class="number"
+                        >{{ subject.regularLessons }}</span
+                    >
+                </p>
+                <p class="chip">
+                    <span class="title">Cancelled:</span>&nbsp;<span
+                        class="number"
+                        >{{ subject.lessonsCancelled }}</span
+                    >
+                </p>
+                <p class="chip special">
+                    <span class="title">Occured:</span>&nbsp;<span
+                        class="number"
+                        >{{ subject.lessonsOccured }}</span
+                    >
+                </p>
+                <p class="chip">
+                    <span class="title">Lessons you came late:</span>&nbsp;<span
+                        class="number"
+                        >{{ subject.lessonsLate }}</span
+                    >
+                </p>
+                <p class="chip special">
+                    <span class="title">Absent:</span>&nbsp;<span
+                        class="number"
+                        >{{ subject.lessonsAbsent }}</span
+                    >
+                </p>
+            </div>
+
+            <div
+                class="progress-container | group rounded flex items-center gap-2 mt-2 shadow-header"
+            >
+                <div
+                    #progressBar
+                    class="progress | h-2 grow rounded bg-gray-700 transition-colors group-hover:bg-gray-600 w-full"
+                >
+                    <div
+                        class="h-full rounded bg-gray-400 transition-all group-hover:bg-untis"
+                        [style.width]="subject.presenceInPercent + '%'"
+                    ></div>
+                </div>
+                <span
+                    class="text-sm text-gray-500 transition-colors group-hover:text-untis"
+                >
+                    {{ subject.presenceInPercent }}&nbsp;%
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+</div>

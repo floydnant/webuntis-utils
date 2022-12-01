@@ -1,43 +1,49 @@
 import { Injectable } from '@angular/core';
+import { HotToastService } from '@ngneat/hot-toast';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PresenceResponse } from 'netlify/functions/presence';
 import { of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { WebuntisService } from 'src/app/services/webuntis.service';
 import { dashboardActions } from '../dashboard.actions';
 
 @Injectable()
 export class DashboardEffects {
-    constructor(private actions$: Actions, private untis: WebuntisService) {}
+    constructor(
+        private actions$: Actions,
+        private untis: WebuntisService,
+        private toast: HotToastService
+    ) {}
 
     loadSubjects = createEffect(() => {
         return this.actions$.pipe(
-            ofType(dashboardActions.loadSubjects),
+            ofType(dashboardActions.loadDashboard),
             mergeMap(() => {
-                const subjectsRaw = sessionStorage.getItem(
-                    'untis-data-subjects'
-                );
-                if (subjectsRaw) {
-                    const subjects = JSON.parse(
-                        subjectsRaw
+                const dashboardDataRaw =
+                    sessionStorage.getItem('dashboard-data');
+                if (dashboardDataRaw) {
+                    const dashboardData = JSON.parse(
+                        dashboardDataRaw
                     ) as PresenceResponse;
                     return of(
-                        dashboardActions.loadSubjectsSuccess({
-                            subjects: subjects.subjectDigestsWithPresences,
-                        })
+                        dashboardActions.loadDashboardSuccess(dashboardData)
                     );
                 }
                 return this.untis.getPresences().pipe(
-                    map((subjects) => {
+                    map((dashboardData) => {
                         sessionStorage.setItem(
-                            'untis-data-subjects',
-                            JSON.stringify(subjects)
+                            'dashboard-data',
+                            JSON.stringify(dashboardData)
                         );
-                        return dashboardActions.loadSubjectsSuccess({
-                            subjects: subjects.subjectDigestsWithPresences,
-                        });
+                        return dashboardActions.loadDashboardSuccess(
+                            dashboardData
+                        );
                     })
                 );
+            }),
+            catchError(() => {
+                this.toast.error('Failed to load subjects');
+                return of(dashboardActions.loadDashboardError());
             })
         );
     });

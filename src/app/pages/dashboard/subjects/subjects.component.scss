@@ -1,0 +1,7 @@
+.subject-card:is(:hover, .glow) {
+    --tw-scale-x: 1.02;
+    --tw-scale-y: 1.02;
+    .progress :first-child {
+        box-shadow: 0 0 10px #{"theme(colors.untis)"};
+    }
+}

@@ -30,7 +30,7 @@ export interface SubjectDigestWithPresence extends SubjectDigest {
 
 export interface AbsenceReadable {
     absenceTimeRange: TimeRangeWithDuration;
-    untisTimeRange: UntisTimeRangeMultiDay;
+    // untisTimeRange: UntisTimeRangeMultiDay;
     id: number;
     createdAt: Date;
     createdBy: string;
@@ -47,7 +47,7 @@ export interface AbsenceReadable {
 export interface LessonReadable {
     id: number;
     lessonTimeRange: TimeRangeWithDuration;
-    untisTimeRange: UntisTimeRangeSingleDay;
+    // untisTimeRange: UntisTimeRangeSingleDay;
     teachers: string;
     subject: string;
     rooms: string;
