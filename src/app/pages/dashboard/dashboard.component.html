@@ -10,19 +10,23 @@
     </button>
 </div>
 
-<div class="tab-switch mb-4">
-    <a
-        class="button inline-block bg-gray-600 rounded-r-none"
-        routerLink="subjects"
-        routerLinkActive="bg-untis"
-        >Subject digest</a
-    >
-    <a
-        class="button inline-block bg-gray-600 rounded-l-none"
-        routerLink="absences"
-        routerLinkActive="bg-untis"
-        >Absences</a
-    >
+<div class="flex gap-4 items-center mb-4">
+    <div class="tab-switch">
+        <a
+            class="button inline-block bg-gray-600 rounded-r-none"
+            routerLink="subjects"
+            routerLinkActive="bg-untis"
+            >Subject digest</a
+        >
+        <a
+            class="button inline-block bg-gray-600 rounded-l-none"
+            routerLink="absences"
+            routerLinkActive="bg-untis"
+            >Absences</a
+        >
+    </div>
+    
+    <div class="date-range">{{ (dateRange$ | async)?.startDate | date }} - {{ (dateRange$ | async)?.endDate | date }}</div>
 </div>
 
 <!-- @TODO: #8 add reload button -->
