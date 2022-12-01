@@ -36,7 +36,8 @@ export const handler = handleRequest(async (event) => {
             // @TODO: add custom range support
             // @FIXME: the problem is here with the custom date range
             const customDateRange: DateRange = {
-                startDate: new Date('2022-08-21T22:00:00.000Z'),
+                // startDate: new Date('2022-08-21T22:00:00.000Z'),
+                startDate: new Date(2022, 7, 22),
                 endDate: new Date(2023, 0, 30),
             };
             const dateRange: DateRange = schoolYear;
