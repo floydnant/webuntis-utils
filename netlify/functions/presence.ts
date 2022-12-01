@@ -40,7 +40,7 @@ export const handler = handleRequest(async (event) => {
                 startDate: new Date(2022, 7, 22),
                 endDate: new Date(2023, 0, 30),
             };
-            const dateRange: DateRange = schoolYear;
+            const dateRange: DateRange = customDateRange;
 
             console.log('SCHOOL YEAR: ', schoolYear);
             console.log('SCHOOL YEAR: START:', schoolYear.startDate);
