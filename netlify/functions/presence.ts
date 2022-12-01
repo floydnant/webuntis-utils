@@ -31,40 +31,13 @@ export const handler = handleRequest(async (event) => {
     return await loginUntis(
         credentials,
         async (untis): Promise<PresenceResponse> => {
-            const schoolYear = await untis.getLatestSchoolyear();
+            // const schoolYear = await untis.getLatestSchoolyear();
 
-            // @TODO: add custom range support
-            // @FIXME: the problem is here with the custom date range
-            const customDateRange: DateRange = {
-                // startDate: new Date('2022-08-21T22:00:00.000Z'),
+            // @TODO: add custom range support / semester choosing feature
+            const dateRange: DateRange = {
                 startDate: new Date(2022, 7, 22),
                 endDate: new Date(2023, 0, 30),
             };
-            const dateRange: DateRange = customDateRange;
-
-            console.log('SCHOOL YEAR: ', schoolYear);
-            console.log('SCHOOL YEAR: START:', schoolYear.startDate);
-            console.log(
-                'SCHOOL YEAR: is Date START:',
-                schoolYear.startDate instanceof Date
-            );
-            console.log('SCHOOL YEAR: END:', schoolYear.endDate);
-            console.log(
-                'SCHOOL YEAR: is Date END:',
-                schoolYear.endDate instanceof Date
-            );
-
-            console.log('DATE RANGE: ', customDateRange);
-            console.log('DATE RANGE: START:', customDateRange.startDate);
-            console.log(
-                'DATE RANGE: is Date START:',
-                customDateRange.startDate instanceof Date
-            );
-            console.log('DATE RANGE: END:', customDateRange.endDate);
-            console.log(
-                'DATE RANGE: is Date END:',
-                customDateRange.endDate instanceof Date
-            );
 
             const lessons = await getLessonsForSchoolYear(untis, dateRange);
             const untisAbsences = await untis.getAbsentLesson(
