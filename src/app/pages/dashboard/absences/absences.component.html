@@ -25,6 +25,7 @@
                 />
                 <div class="absence-info | md:w-1/2">
                     <div class="time | text-gray-500">
+                        <i class="far fa-clock mr-0.5"></i>
                         {{ absence.startTime | date: "shortTime" }} -
                         {{ absence.endTime | date: "shortTime" }}
                     </div>
@@ -45,6 +46,7 @@
                         class="absence-text | text-gray-100 mb-1"
                         *ngIf="absence.text"
                     >
+                        <i class="far fa-comment-alt-lines text-gray-500 transform translate-y-0.5 mr-0.5"></i>
                         {{ absence.text }}
                     </p>
                     <p class="created-info | text-gray-500">
@@ -72,7 +74,7 @@
                     </p>
                 </div>
                 
-                <div class="lessons | mt-5 md:w-1/2">
+                <div class="lessons | mt-5 md:mt-1 md:w-1/2">
                     <div
                         class="lesson-card"
                         *ngFor="
