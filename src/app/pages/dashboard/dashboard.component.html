@@ -30,6 +30,8 @@
         <i class="fad fa-calendar mr-0.5"></i>
         {{ (dateRange$ | async)?.startDate | date }} - {{ (dateRange$ | async)?.endDate | date }}
     </div>
+
+    <button class="button" (click)="reload()"><i class="far fa-redo-alt text-sm mr-0.5"></i> Reload</button>
 </div>
 
 <!-- @TODO: #8 add reload button -->

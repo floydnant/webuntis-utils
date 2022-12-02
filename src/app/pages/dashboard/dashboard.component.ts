@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit(): void {
         moveToMacroQueue(() => {
-            this.store.dispatch(dashboardActions.loadDashboard());
+            this.store.dispatch(dashboardActions.loadDashboard({}));
         });
     }
 
@@ -39,5 +39,11 @@ export class DashboardComponent implements OnInit {
     clearState() {
         this.router.navigate(['/login']);
         this.store.dispatch(userDataActions.clearState());
+    }
+
+    reload() {
+        this.store.dispatch(
+            dashboardActions.loadDashboard({ ignoreCache: true })
+        );
     }
 }

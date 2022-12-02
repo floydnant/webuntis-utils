@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    CanActivate,
-    Router,
-    RouterStateSnapshot,
-    UrlTree,
-} from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AppState } from '../store';
+import { AppState, SessionStorageState } from '../store';
 
 @Injectable({
     providedIn: 'root',
@@ -22,12 +16,23 @@ export class AuthGuard implements CanActivate {
         | Promise<boolean | UrlTree>
         | boolean
         | UrlTree {
-        return this.store
-            .select((state) => state.userData?.password)
-            .pipe(
-                map((password) =>
-                    password ? true : this.router.parseUrl('/login')
-                )
-            );
+        return this.store.pipe(
+            map((state) => {
+                if (!state.userData?.password) {
+                    const loginRoute = this.router.parseUrl('/login');
+                    try {
+                        const data: SessionStorageState = JSON.parse(
+                            sessionStorage.getItem('dashboard-data')!
+                        );
+
+                        if (!data || data.username != state.userData?.username)
+                            return loginRoute;
+                    } catch {
+                        return loginRoute;
+                    }
+                }
+                return true;
+            })
+        );
     }
 }
