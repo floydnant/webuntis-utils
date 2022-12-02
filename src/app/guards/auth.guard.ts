@@ -18,20 +18,21 @@ export class AuthGuard implements CanActivate {
         | UrlTree {
         return this.store.pipe(
             map((state) => {
-                if (!state.userData?.password) {
-                    const loginRoute = this.router.parseUrl('/login');
-                    try {
-                        const data: SessionStorageState = JSON.parse(
-                            sessionStorage.getItem('dashboard-data')!
-                        );
+                if (state.userData?.password) return true;
 
-                        if (!data || data.username != state.userData?.username)
-                            return loginRoute;
-                    } catch {
+                const loginRoute = this.router.parseUrl('/login');
+
+                try {
+                    const data: SessionStorageState = JSON.parse(
+                        sessionStorage.getItem('dashboard-data')!
+                    );
+
+                    if (!data || data.username != state.userData?.username)
                         return loginRoute;
-                    }
+                    else return true;
+                } catch {
+                    return loginRoute;
                 }
-                return true;
             })
         );
     }
