@@ -15,6 +15,7 @@ import { SubjectsComponent } from './pages/dashboard/subjects/subjects.component
 import { AbsencesComponent } from './pages/dashboard/absences/absences.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
+import { QRCodeComponent } from './pages/login/qr-code/qr-code.component';
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import { environment } from 'src/environments/environment';
         DashboardComponent,
         SubjectsComponent,
         AbsencesComponent,
+        QRCodeComponent,
     ],
     imports: [
         BrowserModule,

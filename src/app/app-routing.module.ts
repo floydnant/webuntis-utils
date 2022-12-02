@@ -5,9 +5,11 @@ import { AbsencesComponent } from './pages/dashboard/absences/absences.component
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SubjectsComponent } from './pages/dashboard/subjects/subjects.component';
 import { LoginComponent } from './pages/login/login.component';
+import { QRCodeComponent } from './pages/login/qr-code/qr-code.component';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
+    { path: 'login/qr-code', component: QRCodeComponent },
     {
         path: 'dashboard',
         component: DashboardComponent,

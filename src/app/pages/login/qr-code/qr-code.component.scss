@@ -1,0 +1,9 @@
+ol, ul {
+    @apply pl-8;
+}
+ol > li {
+    @apply list-decimal mt-2;
+}
+ul > li {
+    @apply list-disc mt-2;
+}
