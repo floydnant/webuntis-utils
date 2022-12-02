@@ -24,6 +24,7 @@
     "@ngneat/overview": "^2.0.2",
     "@ngrx/effects": "^12.5.1",
     "@ngrx/store": "^12.5.1",
+    "@ngrx/store-devtools": "^12.5.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "webuntis": "^1.22.1",

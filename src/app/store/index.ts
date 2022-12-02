@@ -17,6 +17,11 @@ export type DashboardState = {
     [key in keyof PresenceResponse]: PresenceResponse[key] | null;
 };
 
+export interface SessionStorageState {
+    username: string;
+    dashboard: DashboardState;
+}
+
 export interface AppState {
     userData: UserDataState;
     dashboard: DashboardState;

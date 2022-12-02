@@ -13,9 +13,17 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { SubjectsComponent } from './pages/dashboard/subjects/subjects.component';
 import { AbsencesComponent } from './pages/dashboard/absences/absences.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, DashboardComponent, SubjectsComponent, AbsencesComponent],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        DashboardComponent,
+        SubjectsComponent,
+        AbsencesComponent,
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -24,6 +32,10 @@ import { AbsencesComponent } from './pages/dashboard/absences/absences.component
             metaReducers,
         }),
         EffectsModule.forRoot(effects),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25,
+            logOnly: environment.production,
+        }),
         HotToastModule.forRoot(),
     ],
     providers: [],
