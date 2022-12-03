@@ -20,10 +20,13 @@ export const handler = handleRequest(async (event) => {
             const { id, name, ...dateRange } =
                 await untis.getLatestSchoolyear();
             const lessons = await getLessonsForSchoolYear(untis, dateRange);
+            const timeGrid = await untis.getTimegrid();
 
             return {
                 dateRange,
-                lessons: lessons.map(digestLesson),
+                lessons: lessons.map((lesson) =>
+                    digestLesson(lesson, timeGrid)
+                ),
             };
         }
     );

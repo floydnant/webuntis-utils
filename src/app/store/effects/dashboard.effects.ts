@@ -50,7 +50,7 @@ export class DashboardEffects {
                                 dashboardActions.loadDashboardSuccess(
                                     sessionStorageState.dashboard
                                 )
-                            ).pipe(delay(0));
+                            )
                     } catch {}
                 }
 
@@ -73,13 +73,15 @@ export class DashboardEffects {
                         return dashboardActions.loadDashboardSuccess(
                             dashboardData
                         );
+                    }),
+                    catchError(() => {
+                        this.toast.error(
+                            'Failed to load data, please login again'
+                        );
+                        this.router.navigateByUrl('/login');
+                        return of(dashboardActions.loadDashboardError());
                     })
                 );
-            }),
-            catchError(() => {
-                this.toast.error('Failed to load data, please login again');
-                this.router.navigateByUrl('/login');
-                return of(dashboardActions.loadDashboardError());
             })
         );
     });

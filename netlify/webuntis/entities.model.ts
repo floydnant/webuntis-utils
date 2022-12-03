@@ -47,6 +47,7 @@ export interface AbsenceReadable {
 export interface LessonReadable {
     id: number;
     lessonTimeRange: TimeRangeWithDuration;
+    lessonNumber: string;
     // untisTimeRange: UntisTimeRangeSingleDay;
     teachers: string;
     subject: string;
