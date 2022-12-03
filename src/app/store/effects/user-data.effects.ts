@@ -45,7 +45,9 @@ export class UserDataEffects {
                     this.toast.observe({
                         loading: 'Checking credentials...',
                         success: (res) => res.message,
-                        error: (res) => res.error.message,
+                        error: (res) =>
+                            res.error.message ||
+                            'Something went wrong, try again please.',
                     }),
                     map(() => userDataActions.loginUserSuccess({ userData })),
                     catchError(() => EMPTY)
