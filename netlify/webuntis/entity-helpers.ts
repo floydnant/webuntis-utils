@@ -1,5 +1,9 @@
-import { getTimeRange, parseUntisDate } from 'netlify/utils/time-utils';
-import { Absence, Lesson, ShortData } from 'webuntis';
+import {
+    getTimeRange,
+    parseUntisDate,
+    UntisTimeRangeSingleDay,
+} from 'netlify/utils/time-utils';
+import { Absence, Lesson, ShortData, Timegrid } from 'webuntis';
 import {
     AbsenceReadable,
     LessonReadable,
@@ -78,29 +82,53 @@ export const digestAbsence = (absence: Absence): AbsenceReadable => {
     };
 };
 
-export const digestLesson = (lesson: Lesson): LessonReadable => ({
-    id: lesson.id,
-    lessonTimeRange: getTimeRange(lesson),
-    // untisTimeRange: {
-    //     date: lesson.date,
-    //     startTime: lesson.startTime,
-    //     endTime: lesson.endTime,
-    // },
-    teachers: lesson.te.map((teacher) => teacher.longname).join(', '),
-    subject: getSubjectId(lesson.su),
-    rooms: lesson.ro
-        .map((room) => `${room.name} (${room.longname})`)
-        .join(', '),
-    code: lesson.code,
-    info: lesson.info,
-    lsnumber: lesson.lsnumber,
-    otherInfo: {
-        activityType: lesson.activityType,
-        bkRemark: lesson.bkRemark,
-        bkText: lesson.bkText,
-        lstext: lesson.lstext,
-        sg: lesson.sg,
-        statflags: lesson.statflags,
-        substText: lesson.substText,
-    },
-});
+export const getLessonIndex = (
+    untisTimeRange: Omit<UntisTimeRangeSingleDay, 'date'>,
+    date: Date,
+    timeGrid: Timegrid[]
+) => {
+    const day = timeGrid.find(({ day }) => day - 1 == date.getDay());
+
+    const lessonStartIndex = day?.timeUnits.find(
+        (unit) => unit.startTime == untisTimeRange.startTime
+    )?.name;
+    const lessonEndIndex = day?.timeUnits.find(
+        (unit) => unit.endTime == untisTimeRange.endTime
+    )?.name;
+
+    if (lessonStartIndex == lessonEndIndex) return lessonStartIndex + '.';
+    return `${lessonStartIndex}. - ${lessonEndIndex}.`;
+};
+
+export const digestLesson = (lesson: Lesson, timeGrid: Timegrid[]): LessonReadable => {
+    const timeRange = getTimeRange(lesson);
+    const lessonNumber = getLessonIndex(lesson, timeRange.startTime, timeGrid);
+
+    return {
+        id: lesson.id,
+        lessonTimeRange: timeRange,
+        lessonNumber: lessonNumber,
+        // untisTimeRange: {
+        //     date: lesson.date,
+        //     startTime: lesson.startTime,
+        //     endTime: lesson.endTime,
+        // },
+        teachers: lesson.te.map((teacher) => teacher.longname).join(', '),
+        subject: getSubjectId(lesson.su),
+        rooms: lesson.ro
+            .map((room) => `${room.name} (${room.longname})`)
+            .join(', '),
+        code: lesson.code,
+        info: lesson.info,
+        lsnumber: lesson.lsnumber,
+        otherInfo: {
+            activityType: lesson.activityType,
+            bkRemark: lesson.bkRemark,
+            bkText: lesson.bkText,
+            lstext: lesson.lstext,
+            sg: lesson.sg,
+            statflags: lesson.statflags,
+            substText: lesson.substText,
+        },
+    };
+};

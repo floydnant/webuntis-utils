@@ -29,9 +29,10 @@ export const handler = handleRequest(async (event) => {
                 dateRange.startDate as any,
                 dateRange.endDate as any
             );
+            const timeGrid = await untis.getTimegrid();
 
             const lessonsGroupedByAbsences = joinAbsencesWithLessons(
-                lessons.map(digestLesson),
+                lessons.map((lesson) => digestLesson(lesson, timeGrid)),
                 absences.absences.map(digestAbsence)
             );
             const absencesGroupedByDay = groupAbsenceEntriesByDay(
