@@ -74,7 +74,9 @@ export const handler = handleRequest(async (event) => {
 
             // Count absences
             lessonsJoinedWithAbsences.forEach((absence) => {
+                if (!absence.lesson.subject) return;
                 const subjectEntry = subjectMap[absence.lesson.subject];
+
                 if (absence.absenceOverlapWithLesson <= 20)
                     subjectEntry.lessonsLate++;
 
