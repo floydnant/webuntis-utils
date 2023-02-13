@@ -25,6 +25,15 @@ export interface PresenceResponse {
     absencesGroupedByDay: ReturnType<typeof groupAbsenceEntriesByDay>;
 }
 
+const firstSemester: DateRange = {
+    startDate: new Date(2022, 7, 22),
+    endDate: new Date(2023, 0, 30),
+};
+const lastSemester: DateRange = {
+    startDate: new Date(2023, 0, 30),
+    endDate: new Date(2023, 3, 21),
+};
+
 export const handler = handleRequest(async (event) => {
     const credentials = parseCredentials(event.body);
 
@@ -35,8 +44,8 @@ export const handler = handleRequest(async (event) => {
 
             // @TODO: add custom range support / semester choosing feature
             const dateRange: DateRange = {
-                startDate: new Date(2022, 7, 22),
-                endDate: new Date(2023, 0, 30),
+                startDate: firstSemester.startDate,
+                endDate: lastSemester.endDate,
             };
 
             const lessons = await getLessonsForSchoolYear(untis, dateRange);
