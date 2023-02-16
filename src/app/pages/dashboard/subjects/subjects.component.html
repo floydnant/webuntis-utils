@@ -4,10 +4,10 @@
         style="grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr))"
     >
         <div
-            class="subject-card | bg-gray-900 rounded-lg p-3 transform-gpu transition-all duration-150 shadow-md group flex flex-col justify-between cursor-default"
+            class="subject-card | bg-gray-900 rounded-lg p-4 transform-gpu transition-all duration-150 shadow-md group flex flex-col justify-between cursor-default"
             *ngFor="let subject of subjects$ | async"
         >
-            <p class="name | font-bold text-xl">{{ subject.subjectId }}</p>
+            <p class="name | font-bold text-xl mb-2">{{ subject.subjectId }}</p>
 
             <div class="chips | my-1 flex flex-wrap gap-2">
                 <p class="chip">
@@ -55,7 +55,8 @@
                     ></div>
                 </div>
                 <span
-                    class="text-sm text-gray-500 transition-colors group-hover:text-untis"
+                    class="text-gray-500 transition-colors group-hover:text-untis"
+                    style="font-weight: 700"
                 >
                     {{ subject.presenceInPercent }}&nbsp;%
                 </span>

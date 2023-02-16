@@ -1,7 +1,7 @@
 <div class="flex md:block">
     <div class="absences-by-day | flex flex-col gap-3 mt-4 mx-auto max-w-4xl">
         <div
-            class="day-entry-card | bg-gray-900 rounded-lg p-3 flex flex-col gap-2 shadow-md cursor-default"
+            class="day-entry-card | bg-gray-900 rounded-lg p-4 flex flex-col gap-2 shadow-md cursor-default"
             *ngFor="let dayEntry of groupedAbsences$ | async"
         >
             <p class="name | font-bold text-xl mb-1">
