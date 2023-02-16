@@ -1,49 +1,43 @@
-<div class="flex gap-4 justify-start items-center">
-    <h1>
-        Dashboard <span class="text-gray-500">for {{ username$ | async }}</span>
-    </h1>
-    <button
-        class="text-gray-400 hover:text-untis hover:underline mt-3"
-        (click)="clearState()"
-    >
-        Switch account
-    </button>
+<div class="sticky top-0 rounded-xl bg-gray-800 bg-opacity-60 backdrop-filter backdrop-blur z-10 flex justify-center">
+    <div>
+        <div class="flex gap-4 justify-start items-center">
+            <h1>
+                Dashboard
+                <span class="text-gray-500">for {{ username$ | async }}</span>
+            </h1>
+            <button class="text-gray-400 hover:text-untis hover:underline mt-3" (click)="clearState()">
+                Switch account
+            </button>
+        </div>
+
+        <div class="flex flex-wrap gap-4 items-center mb-4">
+            <div class="tab-switch w-max">
+                <a class="button inline-block bg-gray-600 rounded-r-none" routerLink="subjects"
+                    routerLinkActive="bg-untis">Subject digest</a>
+                <a class="button inline-block bg-gray-600 rounded-l-none" routerLink="absences"
+                    routerLinkActive="bg-untis">Absences</a>
+            </div>
+
+            <div class="date-range">
+                <i class="fad fa-calendar mr-0.5"></i>
+                {{ (dateRange$ | async)?.startDate | date }} -
+                {{ (dateRange$ | async)?.endDate | date }}
+            </div>
+
+            <button class="button" (click)="reload()">
+                <i class="far fa-redo-alt text-sm mr-0.5"></i> Reload
+            </button>
+        </div>
+
+        <p class="loading | flex justify-center items-center" *ngIf="isLoading$ | async" style="height: 70vh">
+            <i class="fad fa-spinner-third animate-spin text-9xl"></i>
+        </p>
+    </div>
 </div>
 
-<div class="flex flex-wrap gap-4 items-center mb-4">
-    <div class="tab-switch w-max">
-        <a
-            class="button inline-block bg-gray-600 rounded-r-none"
-            routerLink="subjects"
-            routerLinkActive="bg-untis"
-            >Subject digest</a
-        >
-        <a
-            class="button inline-block bg-gray-600 rounded-l-none"
-            routerLink="absences"
-            routerLinkActive="bg-untis"
-            >Absences</a
-        >
-    </div>
-    
-    <div class="date-range">
-        <i class="fad fa-calendar mr-0.5"></i>
-        {{ (dateRange$ | async)?.startDate | date }} - {{ (dateRange$ | async)?.endDate | date }}
-    </div>
-
-    <button class="button" (click)="reload()"><i class="far fa-redo-alt text-sm mr-0.5"></i> Reload</button>
+<div class="mt-4">
+    <router-outlet *ngIf="!(isLoading$ | async)"></router-outlet>
 </div>
-
-<!-- @TODO: #8 add reload button -->
-<p
-    class="loading | flex justify-center items-center"
-    *ngIf="isLoading$ | async"
-    style="height: 70vh"
->
-    <i class="fad fa-spinner-third animate-spin text-9xl"></i>
-</p>
-
-<router-outlet *ngIf="!(isLoading$ | async)"></router-outlet>
 
 <!-- <main class="h-screen w-screen flex flex-col justify-center items-center"> -->
 

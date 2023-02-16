@@ -41,7 +41,7 @@ input[type="url"] {
         @apply inline-block px-2 rounded-full border transition-colors;
 
         &:not([class*="border-"]) {
-            @apply border-gray-600 group-hover:border-untis;
+            @apply border-gray-700 group-hover:border-untis;
         }
 
         .title {
