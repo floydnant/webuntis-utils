@@ -1,3 +1,15 @@
+<ng-template #termsOfService>
+    <p class="text-gray-400 mt-2">
+        You agree to our
+        <a
+            href="https://floyd-haremsa.notion.site/WebUntis-Utils-Terms-of-Service-40d7a7bf60b3445ca80bea528c7bbc33"
+            target="_blank"
+            class="hover:underline hover:text-untis"
+            >Terms of Service.</a
+        >
+    </p>
+</ng-template>
+
 <main class="h-screen w-screen flex flex-col justify-center items-center">
     <div>
         <h1>Login</h1>
@@ -10,6 +22,9 @@
                 with <span class="text-untis">{{ userData.username }}</span>
             </p>
             <input #passwordInput type="password" placeholder="Password" />
+
+            <ng-container [ngTemplateOutlet]="termsOfService"></ng-container>
+
             <button class="button mt-2 w-full bg-untis">Login</button>
 
             <button
@@ -62,6 +77,10 @@
                         [value]="serverUrl"
                     ></option>
                 </datalist>
+
+                <ng-container
+                    [ngTemplateOutlet]="termsOfService"
+                ></ng-container>
 
                 <button class="button mt-2 w-full bg-untis">Login</button>
 
