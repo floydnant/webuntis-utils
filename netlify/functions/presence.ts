@@ -45,7 +45,7 @@ export const handler = handleRequest(async (event) => {
             // @TODO: add custom range support / semester choosing feature
             const dateRange: DateRange = {
                 startDate: firstSemester.startDate,
-                endDate: lastSemester.endDate,
+                endDate: new Date(2023, 2, 31), // lastSemester.endDate,
             };
 
             const lessons = await getLessonsForSchoolYear(untis, dateRange);
